@@ -7,6 +7,7 @@ var config = require('../../config');
 const path = require('path');
 var User = require('../../models/User.model');
 var VerifyToken = require('./VerifyToken');
+const path = require('path');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
