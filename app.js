@@ -9,7 +9,7 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 /*
 Pegar en header de HTML lo siguiente para utilizar el Bootstrap
-  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
 */
 
 app.get('/api', function (req, res) {
