@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <title>Prompt Battle</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/resources/css/footer.css" />
+    <link rel="stylesheet" href="/resources/css/app.css" />
+    <link rel="stylesheet" href="/resources/css/index.css" />
+  </head>
+  <body>
+    <main class="text-center">
+      <img
+        id="background-img"
+        src="../resources/Images/background_0.jpg"
+        alt="Background"
+      />
+      <h1 class="display-5 pt-5">Prompt Battle</h1>
+      <a
+        href="/api/auth/login"
+        type="button"
+        class="btn btn-outline-light btn-login"
+        >Iniciar sesión</a>
+
+      <div class="p-4">
+        <p class="fs-4 m-0">¿Quieres jugar?</p>
+        <p class="m-0 mb-1 fs-5">¡Ingresa tu nombre debajo y espera a tu turno!</p>
+        
+        <form action="javascript(0)">
+          <label for="nombreJugador">Alias:
+            <input id="nombreJugador" type="text" class="form-control" />
+          </label>
+          <button type="submit" class="btn btn-outline-light btn-jugar fs-5">
+            ¡Jugar!
+          </button>
+        </form>
+      </div>
+    </main>
+    <footer></footer>
+    <script type="text/javascript">
+      const nombreJugador = document.getElementById("nombreJugador");
+      const botonJugar = document.querySelector('button[type="submit"]');
+
+      fetch("./views/footer.html")
+        .then((response) => {
+          return response.text();
+        })
+        .then((data) => {
+          document.querySelector("footer").innerHTML = data;
+        });
+    </script>
+  </body>
+</html>

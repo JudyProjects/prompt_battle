@@ -1,0 +1,25 @@
+#background-img {
+    position: absolute;
+    height: 500px;
+    width: 900px;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra la imagen */
+    filter: blur(2px);
+  }
+
+  .btn-login {
+    position: absolute;
+    margin: 3%;
+    right: 15px;
+    top: 10px;
+  }
+
+  .btn-jugar {
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 50%;
+    top: 72%;
+    transform: translate(-50%, -50%); /* Centra el botón */
+  }
