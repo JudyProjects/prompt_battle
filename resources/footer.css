@@ -1,0 +1,14 @@
+.footer-image {
+  width: 25vw;
+  max-width: 150px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+footer {
+  height: 20vh;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
