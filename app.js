@@ -15,13 +15,8 @@ app.use(cookieParser());
 Pegar en header de HTML lo siguiente para utilizar el Bootstrap
   <link rel="stylesheet" href="/css/bootstrap.min.css">
 */
-
-app.get('/', function(req, res) {
-  //res.sendFile( '/views/login.html');
-});
-
-app.get('/api', function (req, res) {
-  res.status(200).send('API works.');
+app.get('/', function (req, res) {
+  res.status(200).sendFile(path.join(__dirname, '/views/index.html'));
 });
 
 var AuthController = require('./auth/AuthController');

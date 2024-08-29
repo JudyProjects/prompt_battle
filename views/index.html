@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <title>Prompt Battle</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
+            rel="stylesheet" />
+        <style>
+            :root {
+                --background-height: 700px;
+                --background-width: 1200px;
+            }
+
+            body {
+                background: rgb(5,5,5);
+                background: linear-gradient(164deg, rgba(5,5,5,1) 0%, rgba(32,32,32,1) 100%); 
+                padding: 3%;
+                height: 100vh;
+            }
+
+            .bungee-tint-regular {
+                font-family: "Bungee Tint", sans-serif;
+                font-weight: 400;
+                font-style: normal;
+            }
+
+            #background-img {
+                position: absolute;
+                height: var(--background-height);
+                width: var(--background-width);
+                z-index: -1;
+                top: 60%;
+                left: 50%;
+                transform: translate(-50%, -50%); /* Centra la imagen */
+                filter: blur(2px);
+            }
+
+            .btn-login {
+                position: absolute;
+                margin: 3%;
+                right: 15px;
+                top: 10px;
+            }
+
+            .btn-jugar {
+                background: rgba(0, 0, 0, 0.3);
+                position: absolute;
+                left: 50%;
+                top: 85%;
+                transform: translate(-50%, -50%); /* Centra el botón */
+            }
+        </style>
+    </head>
+    <body class="bungee-tint-regular text-center">
+        <h1 class="display-5">Prompt Battle</h1>
+        <button href="/login" class="btn btn-outline-light btn-login">Iniciar sesión</button>
+        <div class="p-4 w-100 h-100">
+            <img id="background-img" src="../resources/Images/background_0.jpg"
+                alt="Background">
+            <p class="fs-2">¿Quieres jugar?</p>
+            
+            <p class="mt-4 fs-3">¡Ingresa tu nombre debajo y espera a tu turno!</p>
+            <form action="javascript(0)">
+                <label class="fs-4" for="nombreJugador">Alias:
+                    <input class="fs-4" id="nombreJugador" type="text">
+                </label>
+                <button type="submit" class="btn btn-outline-light btn-jugar fs-2">¡Jugar!</button>
+            </form>
+        </div>
+        <script type="text/javascript">
+        const nombreJugador = document.getElementById('nombreJugador');
+        const botonJugar = document.querySelector('button[type="submit"]');
+    </script>
+    </body>
+</html>
