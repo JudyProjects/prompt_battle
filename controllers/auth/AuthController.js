@@ -42,6 +42,10 @@ router.get('/login', function(req, res){
 	res.status(200).sendFile(path.join(__dirname, '../views/login.html'));
 });
 
+router.get('/lobby', VerifyToken, function(req, res) {
+	res.status(200).sendFile(path.join(__dirname, '../views/lobby.html'));
+});
+
 router.get('/me2', VerifyToken, async function (req, res, next) {
 	const user =  await User.findById(req.userId, { password: 0 }); // projection
 			if (!user) return res.status(404).send("No existe el usuario.");
