@@ -1,0 +1,12 @@
+#timer {
+  color: green !important;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+#divTematica {
+  text-align: center;
+}
+
+.contenedor{
+  height: 90%;
+}
