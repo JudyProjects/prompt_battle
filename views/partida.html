@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="/resources/css/footer.css" />
+    <link rel="stylesheet" href="/resources/css/app.css" />
+    <link rel="stylesheet" href="/resources/css/partida.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/resources/js/temporizador.js"></script>
+    <script src="/socket.io/socket.io.js" crossorigin="anonymous"></script>
+    <title>Partida</title>
+  </head>
+  <body>
+    <main>
+      <h1 class="d-flex justify-content-center p-2">Partida</h1>
+      <div class="d-flex row contenedor">
+        <div
+          class="d-flex col-6 row border border-1 justify-content-center align-items-end"
+        >
+          <div class="text-center w-100 h-50">
+            <h2 id="timer" class="display-1">00:00</h2>
+          </div>
+          <div
+            id="txtArea+btn"
+            class="d-flex row align-items-end h-50 justify-content-center"
+          >
+            <div class="form-floating w-100">
+              <textarea
+                class="form-control h-100 row"
+                placeholder="Leave a comment here"
+                id="floatingTextarea"
+              ></textarea>
+              <label for="floatingTextarea"
+                >Sé muy creativo mucha suerte!!</label
+              >
+            </div>
+            <div class="d-flex row justify-content-center align-items-center">
+              <button
+                type="submit"
+                class="btn btn-outline-light m-3 w-50"
+                id="btnGenerar"
+              >
+                Generar
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="border border-1 col-6">
+          <div
+            id="divTematica"
+            class="d-flex row align-items-center justify-content-center border border-1 w-50 rounded-2 m-2"
+          >
+            <p>Tematica actual :</p>
+            <label id="tematicaElegida">Osos pardos</label>
+          </div>
+          <div id="divImagenesGeneradas" class="m-5"></div>
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+    <script type="text/javascript">
+      fetch("../../views/footer.html")
+        .then((response) => {
+          return response.text();
+        })
+        .then((data) => {
+          document.querySelector("footer").innerHTML = data;
+        });
+
+      var socket = io.connect();
+      var llamadas = 0;
+      var btnGenerar = document.getElementById("btnGenerar");
+      btnGenerar.addEventListener("click", () => {
+        var prompt = document.getElementById("floatingTextarea").value;
+        if(llamadas < 2){
+          console.log(llamadas);
+          socket.emit("generarImagenIA", { prompt: prompt });
+        }else{
+          alert("Has alcanzado el límite de llamadas permitidas.");
+        }
+      });
+
+      socket.on("URLarmada", function (data) {
+        llamadas = data.llamadas;
+        console.log(llamadas ,'llamadas a la vuelta');
+        $.ajax({
+          url: data.url,
+          method: "GET",
+          xhrFields: {
+            responseType: "blob",
+          },
+          success: function (blob) {
+            var imageUrl = URL.createObjectURL(blob);
+
+            var imageHtml = `<img src="${imageUrl}" class="img-fluid w-25 h-25 m-2" alt="Imagen AI">`;
+            $("#divImagenesGeneradas").append(imageHtml);
+          },
+          error: function () {
+            alert("Hubo un error al generar la imagen.");
+          },
+        });
+
+        $.ajax({
+          url: data.url2,
+          method: "GET",
+          xhrFields: {
+            responseType: "blob",
+          },
+          success: function (blob) {
+            var imageUrl = URL.createObjectURL(blob);
+
+            var imageHtml = `<img src="${imageUrl}" class="img-fluid w-25 h-25 m-2" alt="Imagen AI">`;
+            $("#divImagenesGeneradas").append(imageHtml);
+          },
+          error: function () {
+            alert("Hubo un error al generar la imagen.");
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -3,9 +3,9 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
-var config = require('../config');
+var config = require('../../config');
 const path = require('path');
-var User = require('../models/User.model');
+var User = require('../../models/User.model');
 var VerifyToken = require('./VerifyToken');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -40,7 +40,7 @@ router.post('/login',  async function (req, res) {
 
 router.get('/login', function(req, res){
 	res.status(200).sendFile(path.join(__dirname, '../views/login.html'));
-})
+});
 
 router.get('/me2', VerifyToken, async function (req, res, next) {
 	const user =  await User.findById(req.userId, { password: 0 }); // projection
