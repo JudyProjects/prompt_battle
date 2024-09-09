@@ -7,7 +7,7 @@ var config = require('../../config');
 const path = require('path');
 var User = require('../../models/User.model');
 var VerifyToken = require('./VerifyToken');
-const path = require('path');
+const TemaModel = require('../../models/Tema.model');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
@@ -27,6 +27,7 @@ router.post('/register', async function (req, res) {
 		return res.status(500).send("Error");
 	}
 });
+
 router.post('/login',  async function (req, res) {
 	const user = await User.findOne({ email: req.body.email });
 		if (!user) return res.status(404).send('No existe usuario.');
@@ -40,17 +41,40 @@ router.post('/login',  async function (req, res) {
 });
 
 router.get('/login', function(req, res){
-	res.status(200).sendFile(path.join(__dirname, '../views/login.html'));
+	res.status(200).sendFile(path.join(__dirname, '../../views/login.html'));
 });
 
 router.get('/lobby', VerifyToken, function(req, res) {
-	res.status(200).sendFile(path.join(__dirname, '../views/lobby.html'));
+	res.status(200).sendFile(path.join(__dirname, '../../views/lobby.html'));
 });
 
 router.get('/me2', VerifyToken, async function (req, res, next) {
 	const user =  await User.findById(req.userId, { password: 0 }); // projection
 			if (!user) return res.status(404).send("No existe el usuario.");
 			res.status(200).send(user);
+});
+
+router.get('/obtenerTemas', VerifyToken, async function (req, res, next) {
+	try {
+        const temas = await TemaModel.find({});
+		if (temas.length == 0) return res.status(404).send("No hay temas.");
+        res.status(200).send(temas);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+router.post('/cargarTema', VerifyToken, async function (req, res) {
+    try {
+        const tema = new TemaModel({
+            contenido: req.body.tema
+        });
+        await tema.save();
+		
+        res.status(200).send(JSON.stringify(tema));
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 module.exports = router;

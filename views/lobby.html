@@ -13,30 +13,141 @@
     <link rel="stylesheet" href="/resources/css/app.css" />
     <link rel="stylesheet" href="/resources/css/lobby.css" />
     <script src="/resources/js/includeFooter.js"></script>
+    <script
+      src="/socket/client-dist/socket.io.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <main class="text-center">
       <h1 class="display-5">Lobby</h1>
 
-      <div class="d-flex justify-content-center">
-        <div class="divIzquierda d-flex justify-content-center align-items-center me-3">
-          <label for="cargarTemas" class="me-3">Cargar temas</label>
-          <input type="text" id="cargarTemas" class="form-control w-75"/>
-          <button type="submit" class="btn btn-outline-light ms-3">Cargar</button>
+      <div class="d-flex justify-content-center h-100">
+        <div
+          class="divIzquierda d-flex justify-content-center align-items-center row me-3"
+        >
+          <h2>Lista de temas</h2>
+          <ul
+            id="listaTemas"
+            class="bg-dark bg-gradient rounded-4 flex-grow-0"
+          ></ul>
+          <div class="inputs align-self-end h-100 text-start">
+            <label for="cargarTemas" class="me-3">Cargar temas</label>
+            <div class="row justify-content-between flex-nowrap">
+              <input type="text" id="cargarTemas" class="form-control" />
+              <button
+                type="submit"
+                id="btnCargarTemas"
+                class="btn btn-outline-light w-25"
+              >
+                Cargar
+              </button>
+            </div>
+          </div>
         </div>
         <div class="divDerecha d-flex justify-content-center row ms-3">
-          <p class="row m-0">Debajo aparecen los jugadores esperando para iniciar una partida.</p>
-          <p class="row m-0 mb-2">Clickea en ellos para dar comienzo a alguna</p>
-          <ul class="bg-dark bg-gradient rounded-4 flex-grow-0">
-            <a><li>Jugador 1 - Jugador 2</li></a>
-            <a><li>Jugador 3 - Jugador 4</li></a>
-            <a><li>Jugador 5 - Jugador 6</li></a>
-          </ul>
+          <p class="m-0">
+            Debajo aparecen los jugadores esperando para iniciar una partida.
+          </p>
+          <p class="m-0 mb-2">
+            Clickea en ellos para dar comienzo a alguna
+          </p>
+          <ul
+            id="listaPartidas"
+            class="bg-dark bg-gradient rounded-4 flex-grow-0"
+          ></ul>
         </div>
       </div>
     </main>
     <footer
       class="border-top d-flex justify-content-center align-items-center"
     ></footer>
+    <script type="text/javascript">
+      var socket = io.connect();
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          const response = await fetch("/api/auth/obtenerTemas");
+          if (response.status == 404) {
+            const li = document.createElement("li");
+            li.classList.add("vacio");
+            li.textContent = "No hay temas disponibles";
+            listaTemas.appendChild(li);
+            return;
+          } else if (!response.ok) {
+            throw new Error("Error al obtener temas");
+          }
+          const data = await response.json();
+          data.forEach((tema) => {
+            const li = document.createElement("li");
+            li.textContent = tema.contenido;
+            listaTemas.appendChild(li);
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      });
+
+      const btnCargarTemas = document.querySelector("#btnCargarTemas");
+      const listaPartidas = document.getElementById("listaPartidas");
+      const listaTemas = document.getElementById("listaTemas");
+
+      socket.on("partidas", function (data) {
+        var anchorPartida = document.createElement("a");
+        var liPartida = document.createElement("li");
+        liPartida.textContent = data.jugadores;
+        anchorPartida.appendChild(liPartida);
+        anchorPartida.dataset.jugador1 = data.jugador1;
+        anchorPartida.dataset.jugador2 = data.jugador2;
+        listaPartidas.appendChild(anchorPartida);
+      });
+
+      /* document.addEventListener('click', function(evt) {
+        if (evt.target.tagName == 'A') {
+          socket.emit('iniciarPartida', evt.target.dataset.jugador1, evt.target.dataset.jugador2);
+        }
+      }); */
+
+      btnCargarTemas.addEventListener("click", async function () {
+        let cargarTemas = document.querySelector("#cargarTemas").value;
+        btnCargarTemas.setAttribute("disabled", "disabled");
+        try {
+          const response = await fetch("/api/auth/cargarTema", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tema: cargarTemas,
+            }),
+          });
+          if (!response.ok) {
+            var resStat = JSON.stringify(response.status);
+            throw new Error(`Error al cargar temas: ${resStat}`);
+          }
+          const data = await response.json();
+          if (data) {
+            btnCargarTemas.removeAttribute("disabled");
+            if (listaTemas.firstChild.classList.contains("vacio")) {
+              listaTemas.firstChild.remove();
+            }
+            const li = document.createElement("li");
+            li.textContent = data.contenido;
+            listaTemas.appendChild(li);
+            socket.emit("cargarTema", {
+              tema: data.contenido
+            });
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+
+      socket.on("temaIngresado", function (data) {
+        btnCargarTemas.removeAttribute("disabled");
+        let cargarTemas = document.querySelector("#cargarTemas");
+        cargarTemas.textContent = "";
+      });
+    </script>
   </body>
 </html>

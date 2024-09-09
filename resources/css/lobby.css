@@ -22,3 +22,14 @@ main {
 .divIzquierda, .divDerecha {
     width: 45%;
 }
+
+#cargarTemas {
+    width: 60%;
+}
+
+.contenedor {
+    display: grid;
+
+    grid-template-columns: 45% 45%;
+    grid-template-rows: 70% auto;
+}

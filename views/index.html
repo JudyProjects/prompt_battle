@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/resources/css/app.css" />
     <link rel="stylesheet" href="/resources/css/index.css" />
     <script src="/resources/js/includeFooter.js"></script>
+    <script src="/socket/client-dist/socket.io.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <main class="text-center">
@@ -36,9 +37,9 @@
         </p>
 
         <form action="javascript(0)">
-          <label for="nombreJugador"
+          <label for="aliasJugador"
             >Alias:
-            <input id="nombreJugador" type="text" class="form-control" />
+            <input id="aliasJugador" type="text" class="form-control" />
           </label>
           <button type="submit" class="btn btn-outline-light btn-jugar fs-5">
             ¡Jugar!
@@ -50,8 +51,15 @@
       class="border-top d-flex justify-content-center align-items-center"
     ></footer>
     <script type="text/javascript">
-      const nombreJugador = document.getElementById("nombreJugador");
+      const aliasJugador = document.getElementById("aliasJugador").value;
       const botonJugar = document.querySelector('button[type="submit"]');
+
+      var socket = io.connect();
+      botonJugar.addEventListener('click', function() {
+        socket.emit('cargarJugador', aliasJugador);
+      });
+
+      /* Falta funcion para dejar de jugar, osea, eliminar sesion del jugador, y cancelar su espera para jugar. */
     </script>
   </body>
 </html>

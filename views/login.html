@@ -68,6 +68,7 @@
             data: JSON.stringify({ email: email, password: password }),
             success: function (response) {
               if (response.auth) {
+                //Emitir crear sesión para admin
                 window.location.href = "/api/auth/lobby";
               } else {
                 alert("Login fallido");
