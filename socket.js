@@ -1,7 +1,6 @@
 var obj = require('./app');
 var io = require("socket.io")(obj.server);
 var router = obj.express.Router();
-var uuid = require('uuid');
 var session = require("express-session");
 var sharedsession = require("express-socket.io-session");
 
