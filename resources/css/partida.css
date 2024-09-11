@@ -1,12 +1,142 @@
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 #timer {
   color: green !important;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-#divTematica {
+#divImagenesGeneradas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+
+.imagenesGeneradas {
+  width: 200px;
+  height: 200px;
+  margin: 4px;
+  animation-name: slide-in;
+  animation-duration: 1s;
+  border: 2px solid red;
+  display: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.seleccionada{
+  border: 5px solid green;
+  border-radius: 5px;
+}
+
+.image-container{
+  min-width: 200px;
+  min-height: 200px;
+  max-width: 208px;
+  position: relative;
+}
+
+.parent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr 5fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 70vh;
+  grid-template-areas: 
+  "Temporizador Tematica"
+  "Prompt IA";
+}
+
+.div1 {
+  grid-area: 1 / 1 / 3 / 3;
+}
+.div2 {
+  grid-area: 1 / 1 / 2 / 2;
+  text-align: center;
+  align-content: center;
+}
+
+.div3 {
+  grid-area: 1 / 2 / 2 / 3;
+  text-align: center;
+  align-content: center;
+}
+.div3 p {
+  font-size: large;
+}
+
+.div3 label {
+  font-size: xx-large;
+}
+.div4 {
+  grid-area: 2 / 1 / 3 / 2;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.div4 div {
+  height: 20vh;
+}
+
+.div5 {
+  grid-area: 2 / 2 / 3 / 3;
   text-align: center;
 }
 
-.contenedor{
-  height: 90%;
+.loader {
+  width: 65px;
+  aspect-ratio: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  border-radius: 50px;
+  box-shadow: 0 0 0 3px inset #fff;
+  animation: l4 2.5s infinite;
+}
+.loader:after {
+  animation-delay: -1.25s;
+}
+@keyframes l4 {
+  0% {
+    inset: 0 35px 35px 0;
+  }
+  12.5% {
+    inset: 0 35px 0 0;
+  }
+  25% {
+    inset: 35px 35px 0 0;
+  }
+  37.5% {
+    inset: 35px 0 0 0;
+  }
+  50% {
+    inset: 35px 0 0 35px;
+  }
+  62.5% {
+    inset: 0 0 0 35px;
+  }
+  75% {
+    inset: 0 0 35px 35px;
+  }
+  87.5% {
+    inset: 0 0 35px 0;
+  }
+  100% {
+    inset: 0 35px 35px 0;
+  }
 }
