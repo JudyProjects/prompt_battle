@@ -160,7 +160,6 @@
 
       // Actualiza lista de jugadores
       socket.on("updateJugadores", function (data) {
-        console.log(data);
         listaJugadores.innerHTML = "";
         data.forEach((jugador) => {
           const liJugador = document.createElement("li");
@@ -171,7 +170,7 @@
 
       // Evento para cargar temas en la base de datos
       btnCargarTemas.addEventListener("click", async function () {
-        let cargarTemas = document.querySelector("#cargarTemas").value;
+        let cargarTemas = document.querySelector("#cargarTemas");
         btnCargarTemas.setAttribute("disabled", "disabled");
         try {
           const response = await fetch("/api/auth/cargarTema", {
@@ -180,7 +179,7 @@
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              tema: cargarTemas,
+              tema: cargarTemas.value,
             }),
           });
           if (!response.ok) {
@@ -196,6 +195,7 @@
             const li = document.createElement("li");
             li.textContent = data.contenido;
             listaTemas.appendChild(li);
+            cargarTemas.value = '';
             socket.emit("cargarTema", {
               tema: data.contenido,
             });
