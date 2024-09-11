@@ -20,56 +20,46 @@ router.use(sessionMiddleware);
 io.use(sharedsession(sessionMiddleware));
 
 io.sockets.on('connection', function (socket) {
-    var llamadas = 0;
-
+    io.emit('updateJugadores', jugadores);
+    
     socket.on('disconnect', function () {
-        console.log('Un cliente se ha desconectado');
-    });
-
-    socket.on('generarImagenIA', function (data) {
-        var prompt = data.prompt;
-        var promptCodificado = encodeURIComponent(prompt);
-        var url = 'https://image.pollinations.ai/prompt/${promptCodificado}?nologo=true&enhance=true&seed=1';
-        var url2 = 'https://image.pollinations.ai/prompt/${promptCodificado}?nologo=true&enhance=true&seed=2';
-        llamadas++;
-        io.sockets.emit("URLarmada", {
-            url: url, url2: url2, llamadas: llamadas
-        });
+        if (socket.handshake.session.jugador) {
+            // Eliminar de array
+            //socket.destroy();
+        }
     });
 
     socket.on('cargarJugador', function (data) {
         try {
             //Crear sesion con datos jugador
-            var jugador = {
-                id: uuid.v4(),
-                alias: data.alias
-            };
-            socket.handshake.session.jugador = jugador;
+            socket.handshake.session.jugador = data;
             socket.handshake.session.save();
             //Guardar en array
-            jugadores.push(jugador);
+            jugadores.push(data);
             //Emitir a room de admins, para cargar lista de espera
-            io.emit('añadirJugadorEspera', jugador);
+            io.sockets.emit('updateJugadores', jugadores);
         } catch (error) {
             console.error(error);
         }
     });
 
-    socket.on('eliminarJugador', function (data) {
-        /* 
-        Eliminar su sesión.
-        Acá se deberá eliminar al jugador del array, y por ende, eliminarlo de la lista de espera.
-        */
+    socket.on('cancelarJugador', function (data) {
+        jugadores.forEach(function (jugador, index) {
+            if (jugador.alias == data) {
+                //Eliminar de sesión
+                //Eliminar de array
+                jugadores.splice(index, 1);
+                //Eliminar de lista de espera en LOBBY
+                io.sockets.emit('updateJugadores', jugadores);
+            }
+        });
     });
 
     socket.on('cargarTema', async function (data) {
-        try {
-            io.sockets.emit('temaIngresado', {
-                tema: data.tema
-            });
-        } catch (error) {
-            console.error(error);
-        }
+        //Cuando un usuario carga un tema en BD, se lo envía a los admins restantes
+        io.sockets.emit('temaIngresado', {
+            tema: data.tema
+        });
     });
 });
 

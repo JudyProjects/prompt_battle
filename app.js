@@ -27,5 +27,5 @@ var PartidaController = require('./controllers/PartidaController');
 app.use('/api', PartidaController);
 
 
-module.exports = {server, express};
+module.exports = { server, express };
 var socket = require('./socket.js');

@@ -13,7 +13,10 @@
     <link rel="stylesheet" href="/resources/css/app.css" />
     <link rel="stylesheet" href="/resources/css/index.css" />
     <script src="/resources/js/includeFooter.js"></script>
-    <script src="/socket/client-dist/socket.io.js" crossorigin="anonymous"></script>
+    <script
+      src="/socket/client-dist/socket.io.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <main class="text-center">
@@ -36,27 +39,45 @@
           ¡Ingresa tu nombre debajo y espera a tu turno!
         </p>
 
-        <form action="javascript(0)">
-          <label for="aliasJugador"
-            >Alias:
-            <input id="aliasJugador" type="text" class="form-control" />
-          </label>
-          <button type="submit" class="btn btn-outline-light btn-jugar fs-5">
-            ¡Jugar!
-          </button>
-        </form>
+        <label for="aliasJugador"
+          >Alias:
+          <input id="aliasJugador" type="text" class="form-control" />
+        </label>
+        <button
+          type="submit"
+          formtarget="aliasJugador"
+          class="btn btn-outline-light btn-jugar fs-5"
+        >
+          ¡Jugar!
+        </button>
       </div>
     </main>
     <footer
       class="border-top d-flex justify-content-center align-items-center"
     ></footer>
     <script type="text/javascript">
-      const aliasJugador = document.getElementById("aliasJugador").value;
+      const aliasJugador = document.getElementById("aliasJugador");
       const botonJugar = document.querySelector('button[type="submit"]');
 
       var socket = io.connect();
-      botonJugar.addEventListener('click', function() {
-        socket.emit('cargarJugador', aliasJugador);
+      botonJugar.addEventListener("click", function () {
+        if (!botonJugar.classList.contains("active")) {
+          botonJugar.classList.add("active");
+          botonJugar.textContent = "Cancelar";
+          socket.emit("cargarJugador", aliasJugador.value);
+        } else {
+          botonJugar.classList.remove("active");
+          botonJugar.textContent = "¡Jugar!";
+          socket.emit("cancelarJugador", aliasJugador.value);
+        }
+      });
+
+      aliasJugador.addEventListener("keydown", function (evt) {
+        if (evt.keyCode == "Enter") {
+          botonJugar.classList.add("active");
+          botonJugar.textContent = "Cancelar";
+          socket.emit("cargarJugador", aliasJugador.value);
+        }
       });
 
       /* Falta funcion para dejar de jugar, osea, eliminar sesion del jugador, y cancelar su espera para jugar. */

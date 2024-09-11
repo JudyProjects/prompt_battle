@@ -41,6 +41,10 @@ router.post('/login',  async function (req, res) {
 });
 
 router.get('/login', function(req, res){
+	var token = req.cookies.token;
+	if (token) {
+		return res.status(200).redirect('/api/auth/lobby');
+	}
 	res.status(200).sendFile(path.join(__dirname, '../../views/login.html'));
 });
 
