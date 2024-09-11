@@ -16,7 +16,11 @@
     <script src="/jquery/jquery.min.js"></script>
     <script src="/resources/js/temporizador.js"></script>
     <script src="/resources/js/API.js"></script>
-    <script src="/socket.io/socket.io.js" crossorigin="anonymous"></script>
+    <script src="/resources/js/includeFooter.js"></script>
+    <script
+      src="/socket/client-dist/socket.io.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Partida</title>
   </head>
   <body>
@@ -66,15 +70,10 @@
              </div>
         </div>
     </main>
-    <footer></footer>
+    <footer
+      class="border-top d-flex justify-content-center align-items-center"
+    ></footer>
     <script type="text/javascript">
-      fetch("../../views/footer.html")
-        .then((response) => {
-          return response.text();
-        })
-        .then((data) => {
-          document.querySelector("footer").innerHTML = data;
-        });
 
       var socket = io.connect();
       var llamadas = 0;
