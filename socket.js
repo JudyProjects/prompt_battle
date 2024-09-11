@@ -57,7 +57,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('cargarTema', async function (data) {
         //Cuando un usuario carga un tema en BD, se lo envía a los admins restantes
-        io.sockets.emit('temaIngresado', {
+        socket.broadcast.emit('temaIngresado', {
             tema: data.tema
         });
     });
