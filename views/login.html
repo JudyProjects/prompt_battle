@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/jquery/jquery.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="/resources/css/footer.css" />
@@ -12,7 +13,7 @@
       href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
       rel="stylesheet"
     />
-    <script src="/jquery/jquery.min.js"></script>
+    <script src="/resources/js/includeFooter.js"></script>
     <title>Login</title>
   </head>
   <body>
@@ -49,16 +50,10 @@
         </form>
       </div>
     </main>
-    <footer></footer>
+    <footer
+      class="border-top d-flex justify-content-center align-items-center"
+    ></footer>
     <script type="text/javascript">
-      fetch("../../views/footer.html")
-        .then((response) => {
-          return response.text();
-        })
-        .then((data) => {
-          document.querySelector("footer").innerHTML = data;
-        });
-
       $(document).ready(function () {
         $("#loginForm").submit(function (event) {
           event.preventDefault();
@@ -72,9 +67,9 @@
             contentType: "application/json",
             data: JSON.stringify({ email: email, password: password }),
             success: function (response) {
-              console.log(response);
               if (response.auth) {
-                window.location.href = "/lobby";
+                //Emitir crear sesión para admin
+                window.location.href = "/api/auth/lobby";
               } else {
                 alert("Login fallido");
               }

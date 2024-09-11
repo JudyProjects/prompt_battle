@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lobby</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/resources/css/footer.css" />
+    <link rel="stylesheet" href="/resources/css/app.css" />
+    <link rel="stylesheet" href="/resources/css/lobby.css" />
+    <script src="/resources/js/includeFooter.js"></script>
+    <script
+      src="/socket/client-dist/socket.io.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <main class="text-center">
+      <h1 class="display-5">Lobby</h1>
+
+      <div class="contenedor">
+        <div class="d-grid divIzquierda-arriba px-3">
+          <h2 class="divIA-texto">Lista de temas</h2>
+          <ul id="listaTemas" class="bg-dark bg-gradient rounded-4"></ul>
+        </div>
+        <div class="d-grid divDerecha-arriba px-3">
+          <p id="divDA-textLista" class="m-0">Lista de jugadores esperando</p>
+          <p id="divDA-seleccionaJugadores" class="m-0">Selecciona jugadores</p>
+          <ul id="listaJugadores" class="bg-dark bg-gradient rounded-4"></ul>
+          <select name="jugadores" id="jugadores[]" class="selectJugadores">
+            <option value="A">Peteco</option>
+            <option value="B">Martín</option>
+          </select>
+
+          <div id="divDA-opcionesPartida">
+            <p id="divDA-opcionesTexto">Opciones de partida</p>
+            <hr />
+            <fieldset class="my-3">
+              <legend>Tiempo de juego (minutos)</legend>
+              <span class="mx-1">
+                <input type="radio" id="1min" value="1min" name="tiempoJuego" />
+                <label for="1min">1</label>
+              </span>
+              <span class="mx-1">
+                <input type="radio" id="2min" value="2min" name="tiempoJuego" />
+                <label for="2min">2</label>
+              </span>
+              <span class="mx-1">
+                <input type="radio" id="3min" value="3min" name="tiempoJuego" />
+                <label for="3min">3</label>
+              </span>
+            </fieldset>
+
+            <fieldset class="my-3">
+              <legend>Cantidad de imagenes a generar</legend>
+              <span class="mx-1">
+                <input
+                  type="radio"
+                  id="1_img"
+                  value="1_img"
+                  name="cantImagenes"
+                />
+                <label for="1_img">1</label>
+              </span>
+              <span class="mx-1">
+                <input
+                  type="radio"
+                  id="2_img"
+                  value="2_img"
+                  name="cantImagenes"
+                />
+                <label for="2_img">2</label>
+              </span>
+              <span class="mx-1">
+                <input
+                  type="radio"
+                  id="3_img"
+                  value="3_img"
+                  name="cantImagenes"
+                />
+                <label for="3_img">3</label>
+              </span>
+            </fieldset>
+
+            <fieldset class="my-3">
+              <legend>Tipo de ganador</legend>
+              <span class="mx-2">
+                <input
+                  type="radio"
+                  id="manual"
+                  value="manual"
+                  name="tipoGanador"
+                />
+                <label for="manual">Manual</label>
+              </span>
+              <span class="mx-2">
+                <input
+                  type="radio"
+                  id="publico"
+                  value="publico"
+                  name="tipoGanador"
+                />
+                <label for="publico">Público</label>
+              </span>
+            </fieldset>
+          </div>
+        </div>
+        <div class="d-grid divIzquierda-abajo px-3 text-start align-items-end">
+          <label for="cargarTemas" class="">Cargar temas</label>
+          <input type="text" id="cargarTemas" class="form-control" />
+          <button
+            type="submit"
+            id="btnCargarTemas"
+            class="btn btn-outline-light"
+          >
+            Cargar
+          </button>
+        </div>
+        <button class="divDerecha-abajo px-3 btn btn-outline-light">
+          Iniciar partida
+        </button>
+      </div>
+    </main>
+    <footer
+      class="border-top d-flex justify-content-center align-items-center"
+    ></footer>
+    <script type="text/javascript">
+      var socket = io.connect();
+      const btnCargarTemas = document.querySelector("#btnCargarTemas");
+      const listaJugadores = document.getElementById("listaJugadores");
+      const listaTemas = document.getElementById("listaTemas");
+
+      // Cuando se carga la página, hace un llamado para obtener los temas almacenados en BD
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          const response = await fetch("/api/auth/obtenerTemas");
+          if (response.status == 404) {
+            const li = document.createElement("li");
+            li.classList.add("vacio");
+            li.textContent = "No hay temas disponibles";
+            listaTemas.appendChild(li);
+            return;
+          } else if (!response.ok) {
+            throw new Error("Error al obtener temas");
+          }
+          const data = await response.json();
+          data.forEach((tema) => {
+            const li = document.createElement("li");
+            li.textContent = tema.contenido;
+            listaTemas.appendChild(li);
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      });
+
+      // Actualiza lista de jugadores
+      socket.on("updateJugadores", function (data) {
+        listaJugadores.innerHTML = "";
+        data.forEach((jugador) => {
+          const liJugador = document.createElement("li");
+          liJugador.textContent = jugador.alias;
+          listaJugadores.appendChild(liJugador);
+        });
+      });
+
+      // Evento para cargar temas en la base de datos
+      btnCargarTemas.addEventListener("click", async function () {
+        let cargarTemas = document.querySelector("#cargarTemas");
+        btnCargarTemas.setAttribute("disabled", "disabled");
+        try {
+          const response = await fetch("/api/auth/cargarTema", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tema: cargarTemas.value,
+            }),
+          });
+          if (!response.ok) {
+            var resStat = JSON.stringify(response.status);
+            throw new Error(`Error al cargar temas: ${resStat}`);
+          }
+          const data = await response.json();
+          if (data) {
+            btnCargarTemas.removeAttribute("disabled");
+            if (listaTemas.firstChild.classList.contains("vacio")) {
+              listaTemas.firstChild.remove();
+            }
+            const li = document.createElement("li");
+            li.textContent = data.contenido;
+            listaTemas.appendChild(li);
+            cargarTemas.value = '';
+            socket.emit("cargarTema", {
+              tema: data.contenido,
+            });
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+
+      // Cuando otro admin carga un tema, lo carga en la pantalla de los admins restantes
+      socket.on("temaIngresado", function (data) {
+        btnCargarTemas.removeAttribute("disabled");
+        if (listaTemas.firstChild.classList.contains("vacio")) {
+          listaTemas.firstChild.remove();
+        }
+        const li = document.createElement("li");
+        li.textContent = data.tema;
+        listaTemas.appendChild(li);
+      });
+    </script>
+  </body>
+</html>
