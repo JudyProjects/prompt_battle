@@ -5,7 +5,6 @@ var db = require('./db');
 var cookieParser = require('cookie-parser');
 global.__root = __dirname + '/';
 var server = require("http").createServer(app);
-
 var io = require("socket.io")(server);
 
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
