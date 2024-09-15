@@ -12,6 +12,14 @@
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
+#btnVolver {
+  position: relative;
+  height: 40px;
+  width: 70px;
+  left: 20px;
+  top: -50px;
+}
+
 #divImagenesGeneradas {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -30,12 +38,12 @@
   cursor: pointer;
 }
 
-.seleccionada{
+.seleccionada {
   border: 5px solid green;
   border-radius: 5px;
 }
 
-.image-container{
+.image-container {
   min-width: 200px;
   min-height: 200px;
   max-width: 208px;
@@ -49,9 +57,9 @@
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   height: 70vh;
-  grid-template-areas: 
-  "Temporizador Tematica"
-  "Prompt IA";
+  grid-template-areas:
+    "Temporizador Tematica"
+    "Prompt IA";
 }
 
 .div1 {

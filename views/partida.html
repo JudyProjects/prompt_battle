@@ -13,6 +13,7 @@
       href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
       rel="stylesheet"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="/jquery/jquery.min.js"></script>
     <script src="/resources/js/temporizador.js"></script>
     <script src="/resources/js/API.js"></script>
@@ -26,6 +27,15 @@
   <body>
     <main>
       <h1 class="d-flex justify-content-center p-2">Partida</h1>
+      <button
+          type="submit"
+          class="btn btn-outline-light"
+          id="btnVolver"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+          </svg>
+        </button>
       <div class="parent">
         <div class="div1">
         </div>
@@ -71,7 +81,7 @@
         </div>
     </main>
     <footer
-      class="border-top d-flex justify-content-center align-items-center"
+      class="border-top align-content-center"
     ></footer>
     <script type="text/javascript">
 
@@ -80,6 +90,7 @@
       const btnGenerar = document.getElementById("btnGenerar");
       const btnResultado = document.getElementById("btnResultado");
       const divImagenes = document.getElementById("divImagenesGeneradas");
+      const btnVolver = document.getElementById("btnVolver");
       btnGenerar.addEventListener("click", () => {
         var prompt = document.getElementById("floatingTextarea").value;
         if (llamadas < 2) {
@@ -132,6 +143,9 @@
         }
       });
 
+      btnVolver.addEventListener("click", function(){
+        window.location.href = "/";
+      });
       
     </script>
   </body>

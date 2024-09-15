@@ -1,28 +1,21 @@
-$(document).ready(function() {
+function iniciarTemporizador(selectedTime) {
     var interval;
+    var time = selectedTime * 60;
+    var timerElement = $('#timer');
 
-    $('#timerSelect').change(function() {
-        clearInterval(interval);
+    interval = setInterval(function() {
+        var minutes = Math.floor(time / 60);
+        var seconds = time % 60;
 
-        var selectedTime = parseInt($(this).val());
-        var time = selectedTime * 60;
-        var timerElement = $('#timer');
+        seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        interval = setInterval(function() {
-            var minutes = Math.floor(time / 60);
-            var seconds = time % 60;
+        timerElement.text(minutes + ":" + seconds);
 
-            // Formatear los segundos para que siempre muestren dos dígitos
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-
-            timerElement.text(minutes + ":" + seconds);
-
-            if (time > 0) {
-                time--;
-            } else {
-                clearInterval(interval);
-                alert("¡El tiempo ha terminado!");
-            }
-        }, 1000);
-    });
-});
+        if (time > 0) {
+            time--;
+        } else {
+            clearInterval(interval);
+            alert("¡El tiempo ha terminado!");
+        }
+    }, 1000);
+}
