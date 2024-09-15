@@ -45,22 +45,22 @@
   text-align: center;
 }
 
-.degradezRojoIzq {
-  background: rgb(5, 5, 5);
+.degradezGrisIzq {
+  background: rgb(84, 83, 83);
   background: linear-gradient(
-    121deg,
-    rgba(5, 5, 5, 1) 0%,
-    rgba(108, 9, 9, 1) 88%,
-    rgba(251, 0, 0, 1) 100%
+    -230deg,
+    rgba(84, 83, 83, 1) 0%,
+    rgba(64, 60, 60, 1) 88%,
+    rgba(149, 149, 149, 1) 100%
   );
 }
 
-.degradezRojoDer {
-  background: rgb(5, 5, 5);
+.degradezGrisDer {
+  background: rgb(84, 83, 83);
   background: linear-gradient(
     230deg,
-    rgba(5, 5, 5, 1) 0%,
-    rgba(108, 9, 9, 1) 88%,
-    rgba(251, 0, 0, 1) 100%
+    rgba(84, 83, 83, 1) 0%,
+    rgba(64, 60, 60, 1) 88%,
+    rgba(149, 149, 149, 1) 100%
   );
 }
