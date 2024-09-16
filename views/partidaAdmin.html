@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Partida</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/resources/css/footer.css" />
+    <link rel="stylesheet" href="/resources/css/app.css" />
+    <link rel="stylesheet" href="/resources/css/partidaAdmin.css" />
+    <script src="/resources/js/includeFooter.js"></script>
+    <script
+      src="/socket/client-dist/socket.io.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="info"><h1>Cargando...</h1></div>
+    <div id="error" hidden></div>
+    <main hidden>
+      <div class="gridContainer text-center mt-5">
+        <div class="divT">
+          <p class="m-0">Temática actual</p>
+          <h2 class="tematicaActual m-0"></h1>
+        </div>
+        <div class="timerContainer">
+          <h3 id="timer" class="m-0"></h3>
+        </div>
+        <div class="config">
+          <p class="m-0">Cant. imagenes: </p>
+          <p class="m-0">Tipo de voto: </p>
+        </div>
+        <h2 class="aliasJug1" class="m-0"></h2>
+        <h2 class="aliasJug2" class="m-0"></h2>
+        <div class="form-floating inputJug1">
+          <textarea
+            class="form-control h-100 row ms-0"
+            placeholder="Aquí se mostrará lo que escriba el jugador: "
+            id="input1"
+            readonly
+            tabindex="-1"
+          ></textarea>
+          <label for="input1"
+              >Aquí se muestra lo que escribe el jugador 1</label
+            >
+        </div>
+        <div class="form-floating inputJug2">
+          <textarea
+            class="form-control h-100 row ms-0"
+            id="input2"
+            readonly
+            tabindex="-1"
+          ></textarea>
+          <label for="input2"
+              >Aquí se muestra lo que escribe el jugador 2</label
+            >
+        </div>
+        <div class="divImgGeneradasJug1 m-5"></div>
+        <div class="divImgGeneradasJug2 m-5"></div>
+      </div>
+    </main>
+    <footer
+      class="border-top d-flex justify-content-center align-items-center"
+    ></footer>
+    <script type="text/javascript">
+      var socket = io.connect();
+      document.addEventListener("DOMContentLoaded", async function () {
+        const divInfo = document.getElementById("info");
+        const divError = document.getElementById("error");
+        const main = document.querySelector("main");
+        const tematica = document.querySelector(".tematicaActual");
+        const timer = document.querySelector("#timer");
+        const config = document.querySelector(".config");
+        const aliasJug1 = document.querySelector(".aliasJug1");
+        const aliasJug2 = document.querySelector(".aliasJug2");
+        const input1 = document.getElementById("input1");
+        const input2 = document.getElementById("input2");
+        const divImgGeneradasJug1 = document.querySelector(
+          ".divImgGeneradasJug1"
+        );
+        const divImgGeneradasJug2 = document.querySelector(
+          ".divImgGeneradasJug2"
+        );
+        const id = window.location.pathname.split("/")[4];
+        try {
+          const response = await fetch(
+            "http://localhost:1234/api/datosPartida/" + id,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const responseData = await response.json();
+          if (!response.ok) {
+            //Cargar problema en div error
+            divInfo.setAttribute("hidden", "true");
+            divError.textContent = "Error al cargar la partida";
+            divError.removeAttribute("hidden");
+          }
+          if (responseData) {
+            //Emitir para redireccionar jugadores, enviar como parametro nombres de jugadores
+            socket.emit("adminListo", {
+              idPartida: responseData._id,
+              jugadores: {
+                jugador1: responseData.jugador1,
+                jugador2: responseData.jugador2,
+              },
+            });
+            //Cargar datos en main success
+            divInfo.setAttribute("hidden", "true");
+            tematica.textContent = responseData.tematica;
+            timer.textContent = responseData.tiempo;
+            //iniciarTemporizador(responseData.tiempo)
+            config.children[0].innerHTML += responseData.cantImagenes;
+            config.children[1].innerHTML += responseData.tipoVoto;
+            aliasJug1.textContent = responseData.jugador1;
+            aliasJug2.textContent = responseData.jugador2;
+            main.removeAttribute("hidden");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+
+      socket.on('finalizarPartida', function(data) {
+        if (id == data.idPartida) {
+          window.href.location = "http://localhost:1234/api/votacion/" + data.idPartida;
+        }
+      });
+    </script>
+  </body>
+</html>

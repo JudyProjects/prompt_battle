@@ -59,7 +59,7 @@
     <script type="text/javascript">
       const aliasJugador = document.getElementById("aliasJugador");
       const botonJugar = document.querySelector('button[type="submit"]');
-
+      
       var socket = io.connect();
       botonJugar.addEventListener("click", function () {
         if (!botonJugar.classList.contains("active")) {
@@ -70,18 +70,27 @@
           botonJugar.classList.remove("active");
           botonJugar.textContent = "¡Jugar!";
           socket.emit("cancelarJugador", aliasJugador.value);
+          //var socket = io.disconnect();
         }
       });
 
-      aliasJugador.addEventListener("keydown", function (evt) {
+      /* aliasJugador.addEventListener("keydown", function (evt) {
         if (evt.keyCode == "Enter") {
           botonJugar.classList.add("active");
           botonJugar.textContent = "Cancelar";
           socket.emit("cargarJugador", aliasJugador.value);
         }
-      });
+      }); */
 
-      /* Falta funcion para dejar de jugar, osea, eliminar sesion del jugador, y cancelar su espera para jugar. */
+      socket.on("redirectPartidaJugadores", function (data) {
+        if (aliasJugador.value == data.jugador1 || aliasJugador.value == data.jugador2) {
+          /* socket.emit("join", {
+            idPartida: data.idPartida
+          }); */
+          localStorage.setItem("aliasJugador", aliasJugador.value);
+          window.location.href = "/api/partida/" + data.idPartida;
+        }
+      });
     </script>
   </body>
 </html>
