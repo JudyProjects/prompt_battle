@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/resources/css/footer.css" />
     <link rel="stylesheet" href="/resources/css/app.css" />
     <link rel="stylesheet" href="/resources/css/partidaAdmin.css" />
-    <script src="/resources/js/includeFooter.js"></script>
     <script
       src="/socket/client-dist/socket.io.js"
       crossorigin="anonymous"
@@ -28,7 +27,7 @@
           <h2 class="tematicaActual m-0"></h1>
         </div>
         <div class="timerContainer">
-          <h3 id="timer" class="m-0"></h3>
+          <h3 id="timer" class="m-0">00:00</h3>
         </div>
         <div class="config">
           <p class="m-0">Cant. imagenes: </p>
@@ -65,7 +64,22 @@
     </main>
     <footer
       class="border-top align-content-center"
-    ></footer>
+    >
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+      <div>
+        <img
+          src="/resources/Images/logoUtec.png"
+          alt="logoUtec"
+          class="footer-image mx-4"
+        />
+      </div>
+      <div>
+        <p class="m-0">Tecnólogo en informática Paysandú</p>
+        <p class="m-0">Franco Sancristóbal - Angelo Festino</p>
+      </div>
+      <p class="mx-4 my-0">2024</p>
+    </div>
+  </footer>
     <script type="text/javascript">
       var socket = io.connect();
       document.addEventListener("DOMContentLoaded", async function () {
@@ -115,8 +129,7 @@
             //Cargar datos en main success
             divInfo.setAttribute("hidden", "true");
             tematica.textContent = responseData.tematica;
-            timer.textContent = responseData.tiempo;
-            //iniciarTemporizador(responseData.tiempo)
+            iniciarTemporizador(responseData.tiempo)
             config.children[0].innerHTML += responseData.cantImagenes;
             config.children[1].innerHTML += responseData.tipoVoto;
             aliasJug1.textContent = responseData.jugador1;
