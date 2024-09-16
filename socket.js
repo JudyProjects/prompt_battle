@@ -116,7 +116,7 @@ io.sockets.on('connection', function (socket) {
         // Aquí puedes agregar más lógica para hacer el seguimiento de la partida
         // y luego emitir 'finalizarPartida' después del tiempo correspondiente.
         setTimeout(() => {
-            socket.broadcast.emit('finalizarPartida', { idPartida: data.idPartida });
+            io.sockets.emit('finalizarPartida', { idPartida: data.idPartida });
         }, tiempoEnMilisegundos);
     });
 
