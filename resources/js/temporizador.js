@@ -15,7 +15,6 @@ function iniciarTemporizador(selectedTime) {
             time--;
         } else {
             clearInterval(interval);
-            alert("¡El tiempo ha terminado!");
         }
     }, 1000);
 }

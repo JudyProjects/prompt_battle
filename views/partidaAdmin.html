@@ -64,7 +64,7 @@
       </div>
     </main>
     <footer
-      class="border-top d-flex justify-content-center align-items-center"
+      class="border-top align-content-center"
     ></footer>
     <script type="text/javascript">
       var socket = io.connect();
@@ -130,7 +130,7 @@
 
       socket.on('finalizarPartida', function(data) {
         if (id == data.idPartida) {
-          window.href.location = "http://localhost:1234/api/votacion/" + data.idPartida;
+          window.href.location = `http://localhost:1234/api/votacion/${data.idPartida}`;
         }
       });
     </script>
