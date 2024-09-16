@@ -92,8 +92,15 @@ ul {
     .selectJugadores {
         grid-area: select2;
         align-content: start;
-        max-height: 40px;
     }
+}
+
+.select2 {
+    height: 31px !important;
+}
+
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: rgba(52, 49, 49, 0.549) !important;
 }
 
 .divDerecha-abajo {

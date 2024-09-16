@@ -1,0 +1,71 @@
+.gridContainer {
+    height: 85%;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1.5fr 1fr 4fr 6fr;
+    grid-template-areas: 
+        "timer tematica tematica config"
+        "alias1 alias1 alias2 alias2"
+        "input1 input1 input2 input2"
+        "fotos1 fotos1 fotos2 fotos2"
+    ;
+
+    .divT {
+        grid-area: tematica;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .timerContainer {
+        grid-area: timer;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .config {
+        grid-area: config;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .aliasJug1 {
+        grid-area: alias1;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .aliasJug2 {
+        grid-area: alias2;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .inputJug1 {
+        grid-area: input1;
+        justify-self: center;
+        align-self: center;
+        width: 60%;
+        height: 70%;
+    }
+    
+    .inputJug2 {
+        grid-area: input2;
+        justify-self: center;
+        align-self: center;
+        width: 60%;
+        height: 70%;
+    }
+
+    .divImgGeneradasJug1 {
+        grid-area: fotos1;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .divImgGeneradasJug2 {
+        grid-area: fotos2;
+        justify-self: center;
+        align-self: center;
+    }
+}

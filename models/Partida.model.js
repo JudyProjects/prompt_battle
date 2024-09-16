@@ -1,10 +1,15 @@
 var mongoose = require('mongoose');
 var PartidaSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    jugadores: { type: String },
-    configuracion: { type: String },
-    ganador: { type: String },
-    imagenes: { type: String }
+    jugador1: { type: String },
+    jugador2: { type: String },
+    tiempo: { type: Number },
+    cantImagenes: { type: Number },
+    tipoVoto: { type: String },
+    tematica: { type: String },
+    ganador: { type: String, default: null },
+    imgJug1: { type: String, default: null },
+    imgJug2: { type: String, default: null },
 });
 mongoose.model('Partida', PartidaSchema);
 

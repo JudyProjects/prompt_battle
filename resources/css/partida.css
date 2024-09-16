@@ -38,7 +38,12 @@
   cursor: pointer;
 }
 
-.seleccionada {
+.seleccionada{
+  border: 5px solid rgb(245, 223, 34);
+  border-radius: 5px;
+}
+
+.elegida {
   border: 5px solid green;
   border-radius: 5px;
 }

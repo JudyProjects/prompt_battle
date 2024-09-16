@@ -25,7 +25,9 @@
     <title>Partida</title>
   </head>
   <body>
-    <main>
+    <div id="info"><h1>Cargando...</h1></div>
+    <div id="error" hidden></div>     
+    <main hidden>
       <h1 class="d-flex justify-content-center p-2">Partida</h1>
       <button
           type="submit"
@@ -44,7 +46,7 @@
         </div>
         <div class="div3">
           <p>Tematica actual :</p>
-            <label id="tematicaElegida">Osos pardos</label>
+            <label id="tematicaElegida">...</label>
         </div>
         <div class="div4">
           <div class="form-floating">
@@ -91,6 +93,12 @@
       const btnResultado = document.getElementById("btnResultado");
       const divImagenes = document.getElementById("divImagenesGeneradas");
       const btnVolver = document.getElementById("btnVolver");
+      const tematicaElegida = document.getElementById("tematicaElegida");
+      
+      const divInfo = document.getElementById("info");
+      const divError = document.getElementById("error");
+      const main = document.querySelector("main");
+      let cantImagenes;
       btnGenerar.addEventListener("click", () => {
         var prompt = document.getElementById("floatingTextarea").value;
         if (llamadas < 2) {
@@ -98,7 +106,7 @@
             alert("Por favor, introduce un texto para generar la imagen.");
             return;
           }
-          var urls = generarImagenes(prompt, 3);
+          var urls = generarImagenes(prompt, cantImagenes);
           llamadas++;
           
           urls.forEach((url, index) => {
@@ -112,7 +120,7 @@
             const nuevaImagen = document.createElement('img');
             nuevaImagen.src = url;
             nuevaImagen.onclick = function() {
-              if(nuevaImagen.classList.contains("seleccionada")){
+              if(nuevaImagen.classList.contains("seleccionada")) {
                 nuevaImagen.classList.remove("seleccionada");
                 btnResultado.setAttribute("disabled", "disabled");
                 return;
@@ -147,6 +155,75 @@
         window.location.href = "/";
       });
       
+      btnResultado.addEventListener("click", function() {
+        const img = document.querySelector("img.seleccionada");
+        if (btnResultado.classList.contains("resultadoActivo")) {
+          img.classList.remove("elegida");
+          btnResultado.textContent = "Elegir imagen";
+          btnResultado.classList.remove("resultadoActivo");
+          return;
+        }
+        if (img) {
+          img.classList.add("elegida");
+          btnResultado.textContent = "Cancelar selección";
+          btnResultado.classList.add("resultadoActivo");
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          const id = window.location.pathname.split("/")[3];
+          const response = await 
+          fetch("http://localhost:1234/api/datosPartida/" + id,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const responseData = await response.json();
+          if (!response.ok) {
+            divError.textContent = "Ha surgido un problema con la partida";
+            divError.removeAttribute("hidden");
+            divInfo.setAttribute("hidden", "true");
+          }
+          if (responseData) {
+            //Cargar temporizador
+            iniciarTemporizador(responseData.tiempo);
+            //Cargar tematica
+            tematicaElegida.textContent = responseData.tematica;
+            //Cargar cant imagenes a generar
+            cantImagenes = responseData.cantImagenes;
+            divInfo.setAttribute("hidden", "true");
+            main.removeAttribute("hidden");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+
+      socket.on('finalizarPartida', function(data) {
+        //obtener imagen seleccionada
+        const id = window.location.pathname.split("/")[3];
+        if (data.idPartida == id) {
+          const imgSeleccionada = document.querySelector('img.elegida');
+          let valorEnviar = false;
+          if (imgSeleccionada) {
+            valorEnviar = imgSeleccionada.getAttribute.src;
+          }
+          socket.emit('jugadorFinalizaPartida', {
+            idPartida: id,
+            valorEnviado: valorEnviar,
+            jugadorQueEnvia: localStorage.getItem('aliasJugador')
+          });
+          localStorage.removeItem('aliasJugador');
+          localStorage.clear();
+          //esperar 2 segundos y redirect a votacion de idPartida
+          window.location.href = `/api/votacion/${id}`;
+          
+        }
+      });
     </script>
   </body>
 </html>
