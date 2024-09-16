@@ -1,0 +1,7 @@
+.listadoPartida{
+   width: 50vw;
+   border-radius: 4px;
+   min-height: 40vh;
+   max-height: 50vh;
+   margin-top: 5vh;
+}
