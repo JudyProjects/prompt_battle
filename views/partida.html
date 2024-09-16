@@ -220,9 +220,8 @@
           localStorage.removeItem('aliasJugador');
           localStorage.clear();
           //esperar 2 segundos y redirect a votacion de idPartida
-          setTimeout(() => {
-            window.location.href = `/api/votacion/${id}`;
-          }, 2000);
+          window.location.href = `/api/votacion/${id}`;
+          
         }
       });
     </script>

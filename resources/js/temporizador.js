@@ -1,7 +1,7 @@
 function iniciarTemporizador(selectedTime) {
     var interval;
     var time = selectedTime * 60;
-    var timerElement = $('#timer');
+    var timerElement = document.getElementById('timer');
 
     interval = setInterval(function() {
         var minutes = Math.floor(time / 60);
@@ -9,7 +9,7 @@ function iniciarTemporizador(selectedTime) {
 
         seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        timerElement.text(minutes + ":" + seconds);
+        timerElement.innerText = minutes + ":" + seconds;
 
         if (time > 0) {
             time--;
