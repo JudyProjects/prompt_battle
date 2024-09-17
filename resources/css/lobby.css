@@ -1,119 +1,142 @@
 main {
-    padding: 2%;
+  padding: 2%;
 }
 
 ul {
-    list-style-type: none;
-    padding: 10px;
-    margin: 0;
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
 }
 
 .divIzquierda-arriba {
-    grid-template-rows: 1fr 3fr 5fr;
-    grid-template-areas:
-        "header"
-        "lista"
-        "lista"
-    ;
+  grid-template-rows: 1fr 3fr 5fr;
+  grid-template-areas:
+    "header"
+    "lista"
+    "lista";
 
-    .divIA-texto {
-        grid-area: header;
-        align-self: center;
-    }
+  .divIA-texto {
+    grid-area: header;
+    align-self: center;
+  }
 
-    #listaTemas {
-        grid-area: lista;
-        overflow-y: auto;
-        align-content: center;
-        line-height: 2.5ch;
-    }
+  #listaTemas {
+    grid-area: lista;
+    overflow-y: auto;
+    align-content: center;
+    line-height: 2.5ch;
+  }
+}
+
+#btnCerrarSesion {
+    position: absolute;
+    margin: 3%;
+    right: 15px;
+    top: 10px;
 }
 
 .divIzquierda-abajo {
-    grid-template-columns: 3fr 1fr;
-    grid-template-rows: 1fr;
-    column-gap: 10px;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 1fr;
+  column-gap: 10px;
 
-    #cargarTemas {
-        width: 100%;
-        grid-column: -3;
-    }
+  #cargarTemas {
+    width: 100%;
+    grid-column: -3;
+  }
 
-    #btnCargarTemas {
-        grid-column-start: -2;
-    }
+  #btnCargarTemas {
+    grid-column-start: -2;
+  }
 }
 
 .divDerecha-arriba {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 3fr 5fr;
-    grid-template-areas:
-        "header1    header2"
-        "listaJugadores select2 "
-        "listaJugadores opciones";
-    column-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 3fr 5fr;
+  grid-template-areas:
+    "header1    header2"
+    "listaJugadores select2 "
+    "listaJugadores opciones";
+  column-gap: 10px;
 
-    #divDA-seleccionaJugadores {
-        grid-area: header2;
-        align-self: end;
+  #divDA-seleccionaJugadores {
+    grid-area: header2;
+    align-self: end;
+  }
+
+  #divDA-opcionesTexto {
+    margin: 0;
+  }
+
+  hr {
+    color: white !important;
+    opacity: 0.75;
+  }
+
+  #divDA-opcionesPartida {
+    grid-area: opciones;
+    align-self: center;
+
+    legend {
+      margin: 0;
+      font-size: 1em;
     }
+  }
 
-    #divDA-opcionesTexto {
-        margin: 0;
-    }
+  #divDA-textLista {
+    grid-area: header1;
+    align-self: end;
+  }
 
-    hr {
-        color: white !important;
-        opacity: .75;
-    }
+  #listaJugadores {
+    grid-area: listaJugadores;
+    overflow-y: auto;
+    align-content: center;
+    line-height: 2.5ch;
+  }
 
-    #divDA-opcionesPartida {
-        grid-area: opciones;
-        align-self: center;
-
-        legend {
-            margin: 0;
-            font-size: 1em;
-        }
-    }
-
-    #divDA-textLista {
-        grid-area: header1;
-        align-self: end;
-    }
-
-    #listaJugadores {
-        grid-area: listaJugadores;
-        overflow-y: auto;
-        align-content: center;
-        line-height: 2.5ch;
-    }
-
-    .selectJugadores {
-        grid-area: select2;
-        align-content: start;
-    }
+  .selectJugadores {
+    grid-area: select2;
+    align-content: start;
+  }
 }
 
 .select2 {
-    height: 31px !important;
+  height: 31px !important;
 }
 
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-    background-color: rgba(52, 49, 49, 0.549) !important;
+.select2-container--default
+  .select2-results__option--highlighted.select2-results__option--selectable {
+  background-color: rgba(52, 49, 49, 0.549) !important;
 }
 
 .divDerecha-abajo {
-    grid-column-start: 2;
-    grid-row-start: 2;
-    align-self: end;
-    justify-self: center;
+  grid-column-start: 2;
+  grid-row-start: 2;
+  align-self: end;
+  justify-self: center;
 }
 
 .contenedor {
-    height: 90%;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 6fr 1fr;
+  height: 70vh;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 6fr 1fr;
+}
+
+@media (max-width: 1388px) {
+  .contenedor {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 1130px) {
+  .contenedor {
+    height: 20vh;
+
+    .contenedor h2 {
+      font-size: 1rem;
+    }
+  }
 }

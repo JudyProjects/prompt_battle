@@ -5,3 +5,11 @@
    max-height: 50vh;
    margin-top: 5vh;
 }
+
+#btnVolverAJugar{
+   position: absolute;
+   width: 25vw;
+   left: 37.5vw;
+   right: 37.5vw;
+   top: 70vh;
+}

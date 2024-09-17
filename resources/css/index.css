@@ -1,25 +1,100 @@
 #background-img {
-    position: absolute;
-    height: 500px;
-    width: 900px;
-    z-index: -1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centra la imagen */
-    filter: blur(2px);
+  position: absolute;
+  height: 50vh;
+  width: 80vw;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centra la imagen */
+  filter: blur(2px);
+  object-fit: cover;
+  transition: filter 0.5s ease;
+  opacity: 0.6;
+}
+
+#overlay {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: 80vw;
+  height: 20vh;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+#overlay:hover + #background-img {
+  filter: blur(2px) brightness(1.3);
+}
+
+.btn-login {
+  position: absolute;
+  margin: 3%;
+  right: 15px;
+  top: 10px;
+}
+
+.btn-jugar {
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  left: 50%;
+  top: 72%;
+  transform: translate(-50%, -50%); /* Centra el botón */
+}
+
+/* Media query para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  #background-img {
+    height: 40vh;
+    width: 100vw;
   }
 
   .btn-login {
-    position: absolute;
-    margin: 3%;
-    right: 15px;
-    top: 10px;
+    right: 10px;
+    top: 5px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
   }
 
   .btn-jugar {
-    background: rgba(0, 0, 0, 0.3);
-    position: absolute;
-    left: 50%;
-    top: 72%;
-    transform: translate(-50%, -50%); /* Centra el botón */
+    font-size: 1rem;
   }
+}
+
+/* Media query para pantallas muy pequeñas (menos de 480px de ancho) */
+@media (max-width: 480px) {
+  #background-img {
+    height: 30vh;
+    width: 100vw;
+  }
+
+  .btn-jugar {
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 1400px) {
+  #background-img {
+    height: 40vh;
+    width: 60vw;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  #aliasJugador {
+    min-width: 25vw;
+  }
+}
+
+@media (max-width: 1800px) {
+  #background-img {
+    top: 55%;
+  }
+}

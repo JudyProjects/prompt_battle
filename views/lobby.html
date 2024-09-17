@@ -28,7 +28,9 @@
   <body>
     <main class="text-center">
       <h1 class="display-5">Lobby</h1>
-
+      <button type="submit" class="btn btn-outline-light m-3" id="btnCerrarSesion">
+        Cerrar sesión
+      </button>
       <div class="contenedor">
         <div class="d-grid divIzquierda-arriba px-3">
           <h2 class="divIA-texto">Lista de temas</h2>
@@ -141,6 +143,7 @@
       const listaJugadores = document.getElementById("listaJugadores");
       const listaTemas = document.getElementById("listaTemas");
       const btnIniciarPartida = document.querySelector("#btnIniciarPartida");
+      const btnCerrarSesion = document.querySelector("#btnCerrarSesion");
 
       // Cuando se carga la página, hace un llamado para obtener los temas almacenados en BD
       document.addEventListener("DOMContentLoaded", async function () {
@@ -275,6 +278,12 @@
           jugador2,
           cantImagenesData,
         });
+      });
+
+      //Evento para cerrar sesión
+      btnCerrarSesion.addEventListener("click", function () {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/";
       });
     </script>
   </body>
