@@ -110,9 +110,19 @@
           </button>
         </div>
       </div>
+      <button type="submit" class="btn btn-outline-light" id="btnVolverAJugar">
+        ¡Volver a jugar!
+      </button>
     </main>
     <footer
       class="border-top d-flex justify-content-center align-items-center"
     ></footer>
   </body>
 </html>
+<script type="text/javascript">
+  const btnVolverAJugar = document.getElementById("btnVolverAJugar");
+
+  btnVolverAJugar.addEventListener("click", function () {
+    window.location.href = "/";
+  });
+</script>
