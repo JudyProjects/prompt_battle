@@ -62,6 +62,7 @@ io.sockets.on('connection', function (socket) {
         quitarJugador(data);
     });
 
+    // Carga el tema en BD
     socket.on('cargarTema', function (data) {
         //Cuando un usuario carga un tema en BD, se lo envía a los admins restantes
         socket.broadcast.emit('temaIngresado', {
@@ -69,6 +70,7 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    // Carga lo que escribe el jugador X en el input correspondiente de la pantalla ADMIN
     socket.on('jugadorEscribe', function (data) {
         io.sockets.emit('jugador-writing', {
             idPartida: data.idPartida,
@@ -77,6 +79,7 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    // Carga las imágenes que escriben los jugadores X en el espacio correspondiente de la pantalla ADMIN
     socket.on('jugadorImagenes', function (data) {
         io.sockets.emit('jugador-imagenes', {
             idPartida: data.idPartida,
@@ -85,6 +88,7 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    // Luego de instanciar en lobby, crea la partida en BD
     socket.on('iniciarPartida', async function (data) {
         try {
             const temaRandom = await TemaModel.aggregate([{ $sample: { size: 1 } }]);
@@ -125,7 +129,7 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
-
+    // Cuando el admin ingresa a la partida admin, emite este evento para redirigir a los jugadores
     socket.on('adminListo', function (data) {
         // Emitir a todos los sockets en la room
         io.sockets.emit('redirectPartidaJugadores', {
@@ -141,6 +145,7 @@ io.sockets.on('connection', function (socket) {
         }, tiempoEnMilisegundos + 5000);
     });
 
+    // Jugador envía la imagen para subirse a BD y ser redireccionado
     socket.on('jugadorFinalizaPartida', async function (data) {
         let partida, imgJug1, imgJug2;
         if (data.valorEnviado) {
@@ -166,42 +171,17 @@ io.sockets.on('connection', function (socket) {
                     console.log("La respuesta no es un JSON:", await response.text()); // Mostrar el HTML recibido
                     throw new Error(`Error en la respuesta del servidor: ${response.status}`);
                 }
-                } catch (error) {
-                    console.error(error);
-                }
-                //Realiza la comparación para ver quien la envió
-                esJugador1 = partida.jugador1 == data.jugadorQueEnvia ? true : false;
-                if (esJugador1) {
-                    imgJug1 = data.valorEnviado;
-                } else {
-                    imgJug2 = data.valorEnviado;
-                }
-                //Actualiza partida en BD con la imagen seleccionada por el jugador que envió la imagen
-                try {
-                    await fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            imgJug1: imgJug1,
-                            imgJug2: imgJug2
-                        })
-                    });
-                } catch (error) {
-                    console.error(error);
-                }
-
-                io.sockets.emit("redirectAvotacion", {
-                    idPartida: data.idPartida,
-                    jugador: data.jugadorQueEnvia
-                });
-            } else {
-                console.log('No se seleccionó imagen en partida');
+            } catch (error) {
+                console.error(error);
             }
-        });
-
-        socket.on('ganadorVotacion', async function(data) {
+            //Realiza la comparación para ver quien la envió
+            esJugador1 = partida.jugador1 == data.jugadorQueEnvia ? true : false;
+            if (esJugador1) {
+                imgJug1 = data.valorEnviado;
+            } else {
+                imgJug2 = data.valorEnviado;
+            }
+            //Actualiza partida en BD con la imagen seleccionada por el jugador que envió la imagen
             try {
                 await fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
                     method: "PUT",
@@ -209,99 +189,128 @@ io.sockets.on('connection', function (socket) {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        ganador: data.ganador
+                        imgJug1: imgJug1,
+                        imgJug2: imgJug2
                     })
                 });
             } catch (error) {
-                console.error(error.message);
+                console.error(error);
             }
-            io.sockets.emit('finalizarVotacion', {
-                idPartida: data.idPartida,
-                ganador: data.ganador,
-                votacion: false
-            });
-        });
 
-        socket.on('initVotacion', async function(data) {
-            try {
-                fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        listaParaVotar:  true
-                    })
-                });
-            } catch (error) {
-                console.error(error.message);
-            }
-            let votacion = {
+            io.sockets.emit("redirectAvotacion", {
                 idPartida: data.idPartida,
-                jugadores: {
-                    jugador1: 0,
-                    jugador2: 0
-                }
-            }
-            io.sockets.emit('nuevaVotacion', {
-                idPartida: data.idPartida,
-                jugador1: data.jugador1,
-                jugador2: data.jugador2
+                jugador: data.jugadorQueEnvia
             });
-            votaciones.push(votacion);
-            io.sockets.emit('iniciarVotacion', data);
-            setTimeout(() => {
-                for (const vot of votaciones) {
-                    if (vot.idPartida == data.idPartida) {
-                        let ganadorFinal = "empate";
-                        if (vot.jugadores.jugador1 > vot.jugadores.jugador2) {
-                            ganadorFinal = data.jugador1;
-                        } else if (vot.jugadores.jugador1 < vot.jugadores.jugador2) {
-                            ganadorFinal = data.jugador2;
-                        }
-                        try {
-                            fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
-                                method: "PUT",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                    ganador:  ganadorFinal,
-                                    listaParaVotar: false
-                                })
-                            });
-                        } catch (error) {
-                            console.error(error.message);
-                        }
-                        io.sockets.emit('finalizarVotacion', {
-                            idPartida: data.idPartida,
-                            ganador: ganadorFinal,
-                            votacion: true
-                        });
-                        break;
-                    }
-                }
-            }, 60000);
-        });
+        } else {
+            console.log('No se seleccionó imagen en partida');
+        }
+    });
 
-        socket.on('sumarVoto', function(data) {
+    // Cuando la partida es de voto manual, se llama aquí con el jugador que debió ganar
+    socket.on('ganadorVotacion', async function (data) {
+        try {
+            await fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ganador: data.ganador
+                })
+            });
+        } catch (error) {
+            console.error(error.message);
+        }
+        io.sockets.emit('finalizarVotacion', {
+            idPartida: data.idPartida,
+            ganador: data.ganador,
+            votacion: false
+        });
+    });
+
+    // Cuando se termina la partida, y el usuario ingresa a la partida, se inicia la votación
+    socket.on('initVotacion', async function (data) {
+        try {
+            fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    listaParaVotar: true
+                })
+            });
+        } catch (error) {
+            console.error(error.message);
+        }
+        let votacion = {
+            idPartida: data.idPartida,
+            jugadores: {
+                jugador1: 0,
+                jugador2: 0
+            }
+        }
+        io.sockets.emit('nuevaVotacion', {
+            idPartida: data.idPartida,
+            jugador1: data.jugador1,
+            jugador2: data.jugador2
+        });
+        votaciones.push(votacion);
+        io.sockets.emit('iniciarVotacion', data);
+        setTimeout(() => {
             for (const vot of votaciones) {
                 if (vot.idPartida == data.idPartida) {
-                    if (data.jugadorAvotar == 1) {
-                        vot.jugadores.jugador1++;
-                    } else {
-                        vot.jugadores.jugador2++;
+                    let ganadorFinal = "empate";
+                    if (vot.jugadores.jugador1 > vot.jugadores.jugador2) {
+                        ganadorFinal = data.jugador1;
+                    } else if (vot.jugadores.jugador1 < vot.jugadores.jugador2) {
+                        ganadorFinal = data.jugador2;
                     }
-                    io.sockets.emit('actualizarVotos', {
+                    try {
+                        fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                ganador: ganadorFinal,
+                                listaParaVotar: false
+                            })
+                        });
+                    } catch (error) {
+                        console.error(error.message);
+                    }
+                    io.sockets.emit('finalizarVotacion', {
                         idPartida: data.idPartida,
-                        votacion: vot.jugadores
+                        ganador: ganadorFinal,
+                        votacion: true
                     });
                     break;
                 }
             }
-        });
+        }, 60000);
+    });
+
+    // Aumenta el voto en 1 del jugador correspondiente
+    socket.on('sumarVoto', function (data) {
+        for (const vot of votaciones) {
+            if (vot.idPartida == data.idPartida) {
+                if (data.jugadorAvotar == 1) {
+                    vot.jugadores.jugador1++;
+                } else {
+                    vot.jugadores.jugador2++;
+                }
+                io.sockets.emit('actualizarVotos', {
+                    idPartida: data.idPartida,
+                    votacion: vot.jugadores
+                });
+                break;
+            }
+        }
+    });
 });
 
+// Elimina el jugador disponible del array jugadores = []
 function quitarJugador(alias) {
     jugadores.forEach(function (jugador, index) {
         if (jugador == alias) {

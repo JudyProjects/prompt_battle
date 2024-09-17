@@ -144,11 +144,11 @@
     </main>
     <footer class="border-top align-content-center"></footer>
     <script type="text/javascript">
+      var socket = io.connect();
       const id = window.location.pathname.split("/")[3];
       const divInfo = document.getElementById("info");
       const divError = document.getElementById("error");
       const main = document.querySelector("main");
-      var socket = io.connect();
       const divJugador1 = document.querySelector("div.divJugador1");
       const divJugador2 = document.querySelector("div.divJugador2");
       const imgJug1 = document.querySelector("img.imgJug1");
@@ -187,11 +187,11 @@
             divInfo.setAttribute("hidden", "true");
             divError.textContent = "Error al cargar la partida";
             divError.removeAttribute("hidden");
-          }
-          if (responseData) {
+          } else if (responseData) {
             main.removeAttribute("hidden");
             //Emitir evento para cargar partida en lista partidas
             if (document.cookie.startsWith("token")) {
+              //Utilizar /me2 para verificar token
               btnLobby.removeAttribute("hidden");
               if (responseData.tipoVoto != "manual") {
                 console.log('initVotacion');

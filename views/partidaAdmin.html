@@ -118,9 +118,8 @@
             divInfo.setAttribute("hidden", "true");
             divError.textContent = "Error al cargar la partida";
             divError.removeAttribute("hidden");
-          }
-          if (responseData) {
-            //Emitir para redireccionar jugadores, enviar como parametro nombres de jugadores
+          }else if (responseData) {
+            // Si trae datos, envía admin listo y carga los datos
             socket.emit("adminListo", {
               idPartida: responseData._id,
               jugadores: {
@@ -130,7 +129,7 @@
               tiempo: responseData.tiempo,
               tipoVoto: responseData.tipoVoto
             });
-            //Cargar datos en main success
+            //Cargar datos en main 
             divInfo.setAttribute("hidden", "true");
             tematica.textContent = responseData.tematica;
             iniciarTemporizador(responseData.tiempo);
@@ -145,6 +144,7 @@
         }
       });
 
+      // Cuando escribe en input, se envía a la pantalla admin
       socket.on('jugador-writing', function(data) {
         if (data.idPartida == id) {
           if (data.aliasJug == aliasJug1.textContent) {
@@ -155,6 +155,7 @@
         }
       });
 
+      // Mismo que arriba pero con imágenes
       socket.on('jugador-imagenes', function(data) {
         if (data.idPartida == id) {
           let divImagenes = data.aliasJug == aliasJug1.textContent ? 
@@ -183,6 +184,7 @@
         }
       });
       
+      // Cuando se termina la partida, se redirecciona a la pantalla de votación
       socket.on('finalizarPartida', function(dato) {
         if (id == dato.idPartida) {
           window.location.href = `/api/votacion/${dato.idPartida}`;
