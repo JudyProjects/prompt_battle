@@ -27,11 +27,15 @@
       <div
         class="listadoPartida container bg-dark bg-gradient overflow-y-auto"
       ></div>
+      <button type="submit" class="btn btn-outline-light" id="btnVolverAJugar">
+        ¡Volver a jugar!
+      </button>
     </main>
     <footer class="border-top align-content-center"></footer>
     <script type="text/javascript">
       var socket = io.connect();
       const listadoPartida = document.querySelector(".listadoPartida");
+      const btnVolverAJugar = document.getElementById("btnVolverAJugar");
 
       document.addEventListener("DOMContentLoaded", async function () {
         try {
@@ -71,6 +75,10 @@
         }
       });
 
+      btnVolverAJugar.addEventListener("click", function () {
+        window.location.href = "/";
+      });
+
       socket.on("nuevaVotacion", function (data) {
         console.log(data);
         try {
@@ -101,10 +109,3 @@
     </script>
   </body>
 </html>
-<script type="text/javascript">
-  const btnVolverAJugar = document.getElementById("btnVolverAJugar");
-
-  btnVolverAJugar.addEventListener("click", function () {
-    window.location.href = "/";
-  });
-</script>
