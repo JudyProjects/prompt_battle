@@ -94,13 +94,14 @@
       const divImagenes = document.getElementById("divImagenesGeneradas");
       const btnVolver = document.getElementById("btnVolver");
       const tematicaElegida = document.getElementById("tematicaElegida");
-      
+      const textArea = document.querySelector("textarea");
+      const id = window.location.pathname.split("/")[3];
       const divInfo = document.getElementById("info");
       const divError = document.getElementById("error");
       const main = document.querySelector("main");
-      let cantImagenes;
       btnGenerar.addEventListener("click", () => {
         var prompt = document.getElementById("floatingTextarea").value;
+        let imagenesEnviar = [];
         if (llamadas < 2) {
           if(prompt === undefined || prompt.trim() == ''){
             alert("Por favor, introduce un texto para generar la imagen.");
@@ -108,6 +109,11 @@
           }
           var urls = generarImagenes(prompt, cantImagenes);
           llamadas++;
+          socket.emit('jugadorImagenes', {
+            idPartida: id,
+            aliasJugador: localStorage.getItem('aliasJugador'),
+            imagenes: urls 
+          });
           
           urls.forEach((url, index) => {
             const divImagen = document.createElement("div");
@@ -203,14 +209,23 @@
         }
       });
 
+      textArea.addEventListener("keyup", function() {
+        socket.emit('jugadorEscribe', {
+          idPartida: id,
+          aliasJugador: localStorage.getItem('aliasJugador'),
+          text: textArea.value
+        });
+      });
+
+
       socket.on('finalizarPartida', function(data) {
         //obtener imagen seleccionada
         const id = window.location.pathname.split("/")[3];
         if (data.idPartida == id) {
           const imgSeleccionada = document.querySelector('img.elegida');
-          let valorEnviar = false;
+          let valorEnviar;
           if (imgSeleccionada) {
-            valorEnviar = imgSeleccionada.getAttribute.src;
+            valorEnviar = imgSeleccionada.getAttribute('src');
           }
           socket.emit('jugadorFinalizaPartida', {
             idPartida: id,

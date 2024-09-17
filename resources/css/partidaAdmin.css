@@ -1,10 +1,10 @@
 .gridContainer {
-    height: 85%;
+    height: 95%;
     justify-content: center;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1.5fr 1fr 4fr 6fr;
-    grid-template-areas: 
+    grid-template-rows: 1.5fr 1fr 2.5fr 6fr;
+    grid-template-areas:
         "timer tematica tematica config"
         "alias1 alias1 alias2 alias2"
         "input1 input1 input2 input2"
@@ -44,28 +44,48 @@
     .inputJug1 {
         grid-area: input1;
         justify-self: center;
-        align-self: center;
-        width: 60%;
-        height: 70%;
+        align-self: start;
+        width: 65%;
+        height: 145px;
     }
-    
+
     .inputJug2 {
         grid-area: input2;
         justify-self: center;
-        align-self: center;
-        width: 60%;
-        height: 70%;
+        align-self: start;
+        width: 65%;
+        height: 145px;
     }
 
     .divImgGeneradasJug1 {
         grid-area: fotos1;
-        justify-self: center;
-        align-self: center;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
     }
 
     .divImgGeneradasJug2 {
         grid-area: fotos2;
-        justify-self: center;
-        align-self: center;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
+    }
+
+    .image-container {
+        min-width: 200px;
+        min-height: 200px;
+        max-width: 208px;
+        position: relative;
+      }
+
+    .imagesGeneradas {
+        width: 200px;
+        height: 200px;
+        margin: 4px;
+        animation-name: slide-in;
+        animation-duration: 1s;
+        border: 1px solid gray;
+        display: none;
+        border-radius: 5px;
     }
 }
