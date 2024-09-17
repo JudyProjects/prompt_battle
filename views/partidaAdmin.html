@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/resources/css/footer.css" />
     <link rel="stylesheet" href="/resources/css/app.css" />
     <link rel="stylesheet" href="/resources/css/partidaAdmin.css" />
+    <link rel="stylesheet" href="/resources/css/partida.css" />
     <script src="/resources/js/temporizador.js"></script>
     <script
       src="/socket/client-dist/socket.io.js"
@@ -25,7 +26,7 @@
       <div class="gridContainer text-center mt-5">
         <div class="divT">
           <p class="m-0">Temática actual</p>
-          <h2 class="tematicaActual m-0"></h1>
+          <h2 class="tematicaActual m-0">...</h1>
         </div>
         <div class="timerContainer">
           <h3 id="timer" class="m-0">00:00</h3>
@@ -34,8 +35,8 @@
           <p class="m-0">Cant. imagenes: </p>
           <p class="m-0">Tipo de voto: </p>
         </div>
-        <h2 class="aliasJug1" class="m-0"></h2>
-        <h2 class="aliasJug2" class="m-0"></h2>
+        <h2 class="aliasJug1" class="m-0">...</h2>
+        <h2 class="aliasJug2" class="m-0">...</h2>
         <div class="form-floating inputJug1">
           <textarea
             class="form-control h-100 row ms-0"
@@ -44,9 +45,6 @@
             readonly
             tabindex="-1"
           ></textarea>
-          <label for="input1"
-              >Aquí se muestra lo que escribe el jugador 1</label
-            >
         </div>
         <div class="form-floating inputJug2">
           <textarea
@@ -55,12 +53,11 @@
             readonly
             tabindex="-1"
           ></textarea>
-          <label for="input2"
-              >Aquí se muestra lo que escribe el jugador 2</label
-            >
         </div>
-        <div class="divImgGeneradasJug1 m-5"></div>
-        <div class="divImgGeneradasJug2 m-5"></div>
+        <div class="divImgGeneradasJug1 m-5">
+        </div>
+        <div class="divImgGeneradasJug2 m-5">
+        </div>
       </div>
     </main>
     <footer
@@ -112,7 +109,7 @@
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-              },
+              }
             }
           );
           const responseData = await response.json();
@@ -121,21 +118,21 @@
             divInfo.setAttribute("hidden", "true");
             divError.textContent = "Error al cargar la partida";
             divError.removeAttribute("hidden");
-          }
-          if (responseData) {
-            //Emitir para redireccionar jugadores, enviar como parametro nombres de jugadores
+          }else if (responseData) {
+            // Si trae datos, envía admin listo y carga los datos
             socket.emit("adminListo", {
               idPartida: responseData._id,
               jugadores: {
                 jugador1: responseData.jugador1,
                 jugador2: responseData.jugador2,
               },
-              tiempo: responseData.tiempo
+              tiempo: responseData.tiempo,
+              tipoVoto: responseData.tipoVoto
             });
-            //Cargar datos en main success
+            //Cargar datos en main 
             divInfo.setAttribute("hidden", "true");
             tematica.textContent = responseData.tematica;
-            iniciarTemporizador(responseData.tiempo)
+            iniciarTemporizador(responseData.tiempo);
             config.children[0].innerHTML += responseData.cantImagenes;
             config.children[1].innerHTML += responseData.tipoVoto;
             aliasJug1.textContent = responseData.jugador1;
@@ -147,9 +144,50 @@
         }
       });
 
+      // Cuando escribe en input, se envía a la pantalla admin
+      socket.on('jugador-writing', function(data) {
+        if (data.idPartida == id) {
+          if (data.aliasJug == aliasJug1.textContent) {
+            input1.textContent = data.text;
+          } else {
+            input2.textContent = data.text;
+          }
+        }
+      });
+
+      // Mismo que arriba pero con imágenes
+      socket.on('jugador-imagenes', function(data) {
+        if (data.idPartida == id) {
+          let divImagenes = data.aliasJug == aliasJug1.textContent ? 
+          document.querySelector(".divImgGeneradasJug1") : document.querySelector(".divImgGeneradasJug2");
+          
+          data.imagenes.forEach((url, index) => {
+            const divImagen = document.createElement("div");
+            divImagen.classList.add("image-container");
+
+            const loader = document.createElement("div");
+            loader.classList.add("loader");
+            divImagen.appendChild(loader);
+
+            const nuevaImagen = document.createElement('img');
+            nuevaImagen.src = url;
+            nuevaImagen.classList.add("imagesGeneradas");
+
+            nuevaImagen.onload = () =>{
+              loader.style.display = "none";
+              nuevaImagen.style.display = "block";
+            }
+
+            divImagen.appendChild(nuevaImagen);
+            divImagenes.appendChild(divImagen);
+          });
+        }
+      });
+      
+      // Cuando se termina la partida, se redirecciona a la pantalla de votación
       socket.on('finalizarPartida', function(dato) {
         if (id == dato.idPartida) {
-          window.location.href = `http://localhost:1234/api/votacion/${dato.idPartida}`;
+          window.location.href = `/api/votacion/${dato.idPartida}`;
         }
       });
     </script>

@@ -33,16 +33,19 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
+    // Para consultar con Bernardo
     /* socket.on('join', function (room) {
         console.log("socket:" + socket.handshake.session.jugador);
         socket.join(room);
         console.log("Se conectó a room: " + room);
     }); */
 
+    // Actualiza la lista de jugadores disponibles en Lobby
     socket.on('obtenerJugadores', function () {
         socket.emit('updateJugadores', jugadores);
     });
 
+    // Carga jugador disponible en Lobby
     socket.on('cargarJugador', function (data) {
         try {
             //Guardar en array
@@ -54,10 +57,12 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
+    // Elimina jugador de la lista en Lobby
     socket.on('cancelarJugador', function (data) {
         quitarJugador(data);
     });
 
+    // Carga el tema en BD
     socket.on('cargarTema', function (data) {
         //Cuando un usuario carga un tema en BD, se lo envía a los admins restantes
         socket.broadcast.emit('temaIngresado', {
@@ -65,8 +70,28 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    // Carga lo que escribe el jugador X en el input correspondiente de la pantalla ADMIN
+    socket.on('jugadorEscribe', function (data) {
+        io.sockets.emit('jugador-writing', {
+            idPartida: data.idPartida,
+            text: data.text,
+            aliasJug: data.aliasJugador
+        });
+    });
+
+    // Carga las imágenes que escriben los jugadores X en el espacio correspondiente de la pantalla ADMIN
+    socket.on('jugadorImagenes', function (data) {
+        io.sockets.emit('jugador-imagenes', {
+            idPartida: data.idPartida,
+            imagenes: data.imagenes,
+            aliasJug: data.aliasJugador
+        });
+    });
+
+    // Luego de instanciar en lobby, crea la partida en BD
     socket.on('iniciarPartida', async function (data) {
         try {
+            const temaRandom = await TemaModel.aggregate([{ $sample: { size: 1 } }]);
             const response = await fetch("http://localhost:1234/api/auth/iniciarPartida", {
                 method: "POST",
                 headers: {
@@ -78,7 +103,7 @@ io.sockets.on('connection', function (socket) {
                     tiempo: data.tiempoData,
                     cantImagenes: data.cantImagenesData,
                     tipoVoto: data.tipoVotoData,
-                    tematica: "francia"
+                    tematica: temaRandom[0].contenido
                 })
             });
 
@@ -104,7 +129,7 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
-
+    // Cuando el admin ingresa a la partida admin, emite este evento para redirigir a los jugadores
     socket.on('adminListo', function (data) {
         // Emitir a todos los sockets en la room
         io.sockets.emit('redirectPartidaJugadores', {
@@ -117,25 +142,34 @@ io.sockets.on('connection', function (socket) {
         // y luego emitir 'finalizarPartida' después del tiempo correspondiente.
         setTimeout(() => {
             io.sockets.emit('finalizarPartida', { idPartida: data.idPartida });
-        }, tiempoEnMilisegundos);
+        }, tiempoEnMilisegundos + 5000);
     });
 
+    // Jugador envía la imagen para subirse a BD y ser redireccionado
     socket.on('jugadorFinalizaPartida', async function (data) {
         let partida, imgJug1, imgJug2;
         if (data.valorEnviado) {
             //Si el valor enviado es una img, obtiene los datos de partida
             try {
-                const response = await fetch("http://localhost:1234/api/obtenerPartida/" + data.idPartida, {
+                const response = await fetch("http://localhost:1234/api/datosPartida/" + data.idPartida, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
                     }
                 });
-                const responseData = await response.json(); // Parsear JSON si la respuesta es válida
-                if (response.ok && responseData) {
-                    partida = responseData;
+                // Verificar si la respuesta es JSON
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    const responseData = await response.json(); // Parsear JSON si la respuesta es válida
+                    if (response.ok && responseData) {
+                        partida = responseData;
+                    } else {
+                        throw new Error(`Error al obtener partida: ${response.status}`);
+                    }
                 } else {
-                    throw new Error(`Error al obtener partida: ${response.status}`);
+                    // La respuesta no es JSON
+                    console.log("La respuesta no es un JSON:", await response.text()); // Mostrar el HTML recibido
+                    throw new Error(`Error en la respuesta del servidor: ${response.status}`);
                 }
             } catch (error) {
                 console.error(error);
@@ -143,14 +177,14 @@ io.sockets.on('connection', function (socket) {
             //Realiza la comparación para ver quien la envió
             esJugador1 = partida.jugador1 == data.jugadorQueEnvia ? true : false;
             if (esJugador1) {
-                imgJug1 = partida.valorEnviado;
+                imgJug1 = data.valorEnviado;
             } else {
-                imgJug2 = partida.valorEnviado;
+                imgJug2 = data.valorEnviado;
             }
             //Actualiza partida en BD con la imagen seleccionada por el jugador que envió la imagen
             try {
                 await fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
-                    method: "POST",
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -162,12 +196,121 @@ io.sockets.on('connection', function (socket) {
             } catch (error) {
                 console.error(error);
             }
+
+            io.sockets.emit("redirectAvotacion", {
+                idPartida: data.idPartida,
+                jugador: data.jugadorQueEnvia
+            });
         } else {
             console.log('No se seleccionó imagen en partida');
         }
     });
+
+    // Cuando la partida es de voto manual, se llama aquí con el jugador que debió ganar
+    socket.on('ganadorVotacion', async function (data) {
+        try {
+            await fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ganador: data.ganador
+                })
+            });
+        } catch (error) {
+            console.error(error.message);
+        }
+        io.sockets.emit('finalizarVotacion', {
+            idPartida: data.idPartida,
+            ganador: data.ganador,
+            votacion: false
+        });
+    });
+
+    // Cuando se termina la partida, y el usuario ingresa a la partida, se inicia la votación
+    socket.on('initVotacion', async function (data) {
+        try {
+            fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    listaParaVotar: true
+                })
+            });
+        } catch (error) {
+            console.error(error.message);
+        }
+        let votacion = {
+            idPartida: data.idPartida,
+            jugadores: {
+                jugador1: 0,
+                jugador2: 0
+            }
+        }
+        io.sockets.emit('nuevaVotacion', {
+            idPartida: data.idPartida,
+            jugador1: data.jugador1,
+            jugador2: data.jugador2
+        });
+        votaciones.push(votacion);
+        io.sockets.emit('iniciarVotacion', data);
+        setTimeout(() => {
+            for (const vot of votaciones) {
+                if (vot.idPartida == data.idPartida) {
+                    let ganadorFinal = "empate";
+                    if (vot.jugadores.jugador1 > vot.jugadores.jugador2) {
+                        ganadorFinal = data.jugador1;
+                    } else if (vot.jugadores.jugador1 < vot.jugadores.jugador2) {
+                        ganadorFinal = data.jugador2;
+                    }
+                    try {
+                        fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                ganador: ganadorFinal,
+                                listaParaVotar: false
+                            })
+                        });
+                    } catch (error) {
+                        console.error(error.message);
+                    }
+                    io.sockets.emit('finalizarVotacion', {
+                        idPartida: data.idPartida,
+                        ganador: ganadorFinal,
+                        votacion: true
+                    });
+                    break;
+                }
+            }
+        }, 60000);
+    });
+
+    // Aumenta el voto en 1 del jugador correspondiente
+    socket.on('sumarVoto', function (data) {
+        for (const vot of votaciones) {
+            if (vot.idPartida == data.idPartida) {
+                if (data.jugadorAvotar == 1) {
+                    vot.jugadores.jugador1++;
+                } else {
+                    vot.jugadores.jugador2++;
+                }
+                io.sockets.emit('actualizarVotos', {
+                    idPartida: data.idPartida,
+                    votacion: vot.jugadores
+                });
+                break;
+            }
+        }
+    });
 });
 
+// Elimina el jugador disponible del array jugadores = []
 function quitarJugador(alias) {
     jugadores.forEach(function (jugador, index) {
         if (jugador == alias) {
@@ -182,3 +325,4 @@ function quitarJugador(alias) {
 
 const jugadores = [];
 const admins = [];
+const votaciones = [];

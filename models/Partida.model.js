@@ -10,6 +10,7 @@ var PartidaSchema = new mongoose.Schema({
     ganador: { type: String, default: null },
     imgJug1: { type: String, default: null },
     imgJug2: { type: String, default: null },
+    listaParaVotar: { type: Boolean, default: false }
 });
 mongoose.model('Partida', PartidaSchema);
 

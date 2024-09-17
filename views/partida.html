@@ -94,13 +94,15 @@
       const divImagenes = document.getElementById("divImagenesGeneradas");
       const btnVolver = document.getElementById("btnVolver");
       const tematicaElegida = document.getElementById("tematicaElegida");
-      
+      const textArea = document.querySelector("textarea");
+      const id = window.location.pathname.split("/")[3];
       const divInfo = document.getElementById("info");
       const divError = document.getElementById("error");
       const main = document.querySelector("main");
-      let cantImagenes;
+      
       btnGenerar.addEventListener("click", () => {
         var prompt = document.getElementById("floatingTextarea").value;
+        let imagenesEnviar = [];
         if (llamadas < 2) {
           if(prompt === undefined || prompt.trim() == ''){
             alert("Por favor, introduce un texto para generar la imagen.");
@@ -108,7 +110,13 @@
           }
           var urls = generarImagenes(prompt, cantImagenes);
           llamadas++;
+          socket.emit('jugadorImagenes', {
+            idPartida: id,
+            aliasJugador: localStorage.getItem('aliasJugador'),
+            imagenes: urls 
+          });
           
+          //Crea cada imagen
           urls.forEach((url, index) => {
             const divImagen = document.createElement("div");
             divImagen.classList.add("image-container");
@@ -151,10 +159,12 @@
         }
       });
 
+      // T lleva al index
       btnVolver.addEventListener("click", function(){
         window.location.href = "/";
       });
       
+      // Setea la imagen que se usará
       btnResultado.addEventListener("click", function() {
         const img = document.querySelector("img.seleccionada");
         if (btnResultado.classList.contains("resultadoActivo")) {
@@ -203,25 +213,37 @@
         }
       });
 
+      textArea.addEventListener("keyup", function() {
+        socket.emit('jugadorEscribe', {
+          idPartida: id,
+          aliasJugador: localStorage.getItem('aliasJugador'),
+          text: textArea.value
+        });
+      });
+
+      // Selecciona la imagen elegida y la envía al socket para subir a BD
       socket.on('finalizarPartida', function(data) {
         //obtener imagen seleccionada
         const id = window.location.pathname.split("/")[3];
         if (data.idPartida == id) {
           const imgSeleccionada = document.querySelector('img.elegida');
-          let valorEnviar = false;
+          let valorEnviar;
           if (imgSeleccionada) {
-            valorEnviar = imgSeleccionada.getAttribute.src;
+            valorEnviar = imgSeleccionada.getAttribute('src');
           }
           socket.emit('jugadorFinalizaPartida', {
             idPartida: id,
             valorEnviado: valorEnviar,
             jugadorQueEnvia: localStorage.getItem('aliasJugador')
-          });
+          });     
+        }
+      });
+
+      socket.on('redirectAvotacion', function(data) {
+        if (data.idPartida == id && data.jugador == localStorage.getItem('aliasJugador')) {
           localStorage.removeItem('aliasJugador');
           localStorage.clear();
-          //esperar 2 segundos y redirect a votacion de idPartida
           window.location.href = `/api/votacion/${id}`;
-          
         }
       });
     </script>

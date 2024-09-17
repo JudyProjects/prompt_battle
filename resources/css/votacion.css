@@ -6,6 +6,7 @@
   grid-row-gap: 0px;
   justify-items: center;
   align-items: center;
+  position: relative;
 }
 
 .div1 {
@@ -63,4 +64,10 @@
     rgba(64, 60, 60, 1) 88%,
     rgba(149, 149, 149, 1) 100%
   );
+}
+
+.btnLobby {
+  position: absolute;
+  left: 5%;
+  top: 5%;
 }
