@@ -231,12 +231,15 @@
             idPartida: id,
             valorEnviado: valorEnviar,
             jugadorQueEnvia: localStorage.getItem('aliasJugador')
-          });
+          });     
+        }
+      });
+
+      socket.on('redirectAvotacion', function(data) {
+        if (data.idPartida == id && data.jugador == localStorage.getItem('aliasJugador')) {
           localStorage.removeItem('aliasJugador');
           localStorage.clear();
-          //esperar 2 segundos y redirect a votacion de idPartida
           window.location.href = `/api/votacion/${id}`;
-          
         }
       });
     </script>

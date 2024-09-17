@@ -33,16 +33,19 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
+    // Para consultar con Bernardo
     /* socket.on('join', function (room) {
         console.log("socket:" + socket.handshake.session.jugador);
         socket.join(room);
         console.log("Se conectó a room: " + room);
     }); */
 
+    // Actualiza la lista de jugadores disponibles en Lobby
     socket.on('obtenerJugadores', function () {
         socket.emit('updateJugadores', jugadores);
     });
 
+    // Carga jugador disponible en Lobby
     socket.on('cargarJugador', function (data) {
         try {
             //Guardar en array
@@ -54,6 +57,7 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
+    // Elimina jugador de la lista en Lobby
     socket.on('cancelarJugador', function (data) {
         quitarJugador(data);
     });
@@ -165,7 +169,6 @@ io.sockets.on('connection', function (socket) {
                 } catch (error) {
                     console.error(error);
                 }
-                console.log(data.jugadorQueEnvia + " de imgJug: " + data.valorEnviado);
                 //Realiza la comparación para ver quien la envió
                 esJugador1 = partida.jugador1 == data.jugadorQueEnvia ? true : false;
                 if (esJugador1) {
@@ -173,7 +176,6 @@ io.sockets.on('connection', function (socket) {
                 } else {
                     imgJug2 = data.valorEnviado;
                 }
-                console.log(data.jugadorQueEnvia + " img1 e img2 "+ imgJug1, imgJug2);
                 //Actualiza partida en BD con la imagen seleccionada por el jugador que envió la imagen
                 try {
                     await fetch("http://localhost:1234/api/editarPartida/" + data.idPartida, {
@@ -189,6 +191,11 @@ io.sockets.on('connection', function (socket) {
                 } catch (error) {
                     console.error(error);
                 }
+
+                io.sockets.emit("redirectAvotacion", {
+                    idPartida: data.idPartida,
+                    jugador: data.jugadorQueEnvia
+                });
             } else {
                 console.log('No se seleccionó imagen en partida');
             }
