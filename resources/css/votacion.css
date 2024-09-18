@@ -71,3 +71,7 @@
   left: 5%;
   top: 5%;
 }
+
+#timer{
+  position: absolute;
+}
