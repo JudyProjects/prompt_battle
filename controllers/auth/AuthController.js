@@ -71,8 +71,7 @@ router.get('/obtenerTemas', VerifyToken, async function (req, res, next) {
 router.post('/cargarTema', VerifyToken, async function (req, res) {
 	try {
 		const tema = await funciones.crearTema(req.body.tema);
-
-		res.status(200).send(JSON.stringify(tema));
+		res.status(200).json(tema);
 	} catch (error) {
 		res.status(500).send(error.message);
 	}

@@ -1,16 +1,16 @@
 var mongoose = require("mongoose");
 const TemaModel = require("../../models/Tema.model");
-const PartidaModel = require("../models/Partida.model");
+const PartidaModel = require("../../models/Partida.model");
 
-module.exports = function findOnePartida(idPartida) {
+function findOnePartida(idPartida) {
   return PartidaModel.findOne({ _id: idPartida });
-};
+}
 
-module.exports = function findPartidaVotacion() {
+function findPartidaVotacion() {
   return PartidaModel.find({ listaParaVotar: true });
-};
+}
 
-module.exports = async function iniciarPartida(
+async function iniciarPartida(
   jugador1,
   jugador2,
   tiempo,
@@ -18,7 +18,7 @@ module.exports = async function iniciarPartida(
   tipoVoto,
   tematica
 ) {
-  const partida = new Partida({
+  const partida = new PartidaModel({
     _id: new mongoose.Types.ObjectId(),
     jugador1: jugador1,
     jugador2: jugador2,
@@ -29,35 +29,50 @@ module.exports = async function iniciarPartida(
   });
   await partida.save();
   return partida;
-};
+}
 
-module.exports = function editarPartida(
+async function editarPartida(
   idPartida,
   imgJug1,
   imgJug2,
   ganador,
   listaParaVotar
 ) {
-  PartidaModel.findByIdAndUpdate(idPartida, {
-    imgJug1: imgJug1,
-    imgJug2: imgJug2,
-    ganador: ganador,
-    listaParaVotar: listaParaVotar,
+  // Crear el objeto de actualización dinámicamente
+  const updateData = {};
+  if (imgJug1 !== undefined) updateData.imgJug1 = imgJug1;
+  if (imgJug2 !== undefined) updateData.imgJug2 = imgJug2;
+  if (ganador !== undefined) updateData.ganador = ganador;
+  if (listaParaVotar !== undefined) updateData.listaParaVotar = listaParaVotar;
+  // Ejecutar la actualización con los campos proporcionados
+  return await PartidaModel.findByIdAndUpdate(idPartida, updateData, {
+    new: true,
   });
-};
+}
 
-module.exports = async function crearTema(tema) {
+async function crearTema(tema) {
   const tematica = new TemaModel({
     contenido: tema,
   });
   await tematica.save();
-};
+  return tematica;
+}
 
-module.exports = function obtenerTemas() {
+function obtenerTemas() {
   return TemaModel.find({});
-};
+}
 
-module.exports = async function findTemaRandom() {
+async function findTemaRandom() {
   const tema = await TemaModel.aggregate([{ $sample: { size: 1 } }]);
   return tema;
+}
+
+module.exports = {
+  findTemaRandom,
+  obtenerTemas,
+  crearTema,
+  editarPartida,
+  iniciarPartida,
+  findOnePartida,
+  findPartidaVotacion,
 };
