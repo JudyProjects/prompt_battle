@@ -40,7 +40,8 @@ router.get("/obtenerPartidasVotacion", async function (req, res) {
 
 router.put("/editarPartida/:id", async function (req, res) {
   try {
-    const partida = await editarPartida(
+    console.log(req.body);
+    const partida = await funciones.editarPartida(
       req.params.id,
       req.body.imgJug1,
       req.body.imgJug2,

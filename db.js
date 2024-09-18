@@ -1,3 +1,3 @@
 var mongoose = require('mongoose');
 
-mongoose.connect(process.env.mongoDB, { useNewUrlParser: true });
+mongoose.connect(process.env.mongoDB);
