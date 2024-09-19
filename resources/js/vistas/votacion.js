@@ -116,9 +116,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             divJugador2.appendChild(hJug2);
             if (responseData.imgJug1) {
                 imgJug1.setAttribute("src", `${responseData.imgJug1}`);
+
+                imgJug1.onerror = () => {
+                    const urlCambiar1 = imgJug1.getAttribute("src");
+                    imgJug1.setAttribute('src', '');
+                    imgJug1.setAttribute('src', urlCambiar1);
+                };
             }
             if (responseData.imgJug2) {
                 imgJug2.setAttribute("src", `${responseData.imgJug2}`);
+
+                imgJug2.onerror = () => {
+                    const urlCambiar2 = imgJug2.getAttribute("src");
+                    imgJug2.setAttribute('src', '');
+                    imgJug2.setAttribute('src', urlCambiar2);
+                };
             }
             socket.emit('obtenerVotos', id);
         }
@@ -208,10 +220,10 @@ socket.on("finalizarVotacion", function (data) {
     }
 });
 
-imgJug1.addEventListener("click", function() {
+imgJug1.addEventListener("click", function () {
     modalImg.setAttribute("src", imgJug1.getAttribute("src"));
 });
 
-imgJug2.addEventListener("click", function() {
+imgJug2.addEventListener("click", function () {
     modalImg.setAttribute("src", imgJug2.getAttribute("src"));
 });
