@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Partida</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/js/bootstrap.bundle.js"></script>
+    <script src="/jquery/jquery.min.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
       rel="stylesheet"
@@ -23,17 +25,17 @@
     <div id="info"><h1>Cargando...</h1></div>
     <div id="error" hidden></div>
     <main hidden>
-      <div class="gridContainer text-center mt-5">
+      <div class="gridContainer text-center pt-5">
         <div class="divT">
           <p class="m-0">Temática actual</p>
-          <h2 class="tematicaActual m-0">...</h1>
+          <h2 class="tematicaActual m-0">...</h2>
         </div>
         <div class="timerContainer">
           <h3 id="timer" class="m-0">00:00</h3>
         </div>
         <div class="config">
-          <p class="m-0">Cant. imagenes: </p>
-          <p class="m-0">Tipo de voto: </p>
+          <p class="m-0">Cant. imagenes:</p>
+          <p class="m-0">Tipo de voto:</p>
         </div>
         <h2 class="aliasJug1" class="m-0">...</h2>
         <h2 class="aliasJug2" class="m-0">...</h2>
@@ -54,34 +56,64 @@
             tabindex="-1"
           ></textarea>
         </div>
-        <div class="divImgGeneradasJug1 m-5">
-        </div>
-        <div class="divImgGeneradasJug2 m-5">
-        </div>
+        <div class="divImgGeneradasJug1 m-5"></div>
+        <div class="divImgGeneradasJug2 m-5"></div>
       </div>
     </main>
-    <footer
-      class="border-top align-content-center"
+    <footer class="border-top align-content-center">
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+          <img
+            src="/resources/Images/logoUtec.png"
+            alt="logoUtec"
+            class="footer-image mx-4"
+          />
+        </div>
+        <div>
+          <p>
+            <a
+              href="https://www.fing.edu.uy/tecnoinf/paysandu/index.html"
+              id="linkTIP"
+              data-replace="Tecnólogo en Informática Paysandú"
+              target="_blank"
+              ><span>Tecnólogo en Informática Paysandú</span></a
+            >
+          </p>
+          <p class="m-0">Franco Sancristóbal - Angelo Festino</p>
+        </div>
+        <p class="mx-4 my-0">2024</p>
+      </div>
+    </footer>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalImagen"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
     >
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-      <div>
-        <img
-          src="/resources/Images/logoUtec.png"
-          alt="logoUtec"
-          class="footer-image mx-4"
-        />
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <img
+              src=""
+              alt="Imagen en modal"
+              id="modal_image"
+              class="w-100 h-auto"
+            />
+          </div>
+        </div>
       </div>
-      <div>
-        <p>
-          <a href="https://www.fing.edu.uy/tecnoinf/paysandu/index.html" id="linkTIP" data-replace="Tecnólogo en Informática Paysandú" target="_blank"
-            ><span>Tecnólogo en Informática Paysandú</span></a
-          >
-        </p>
-        <p class="m-0">Franco Sancristóbal - Angelo Festino</p>
-      </div>
-      <p class="mx-4 my-0">2024</p>
     </div>
-  </footer>
     <script src="/resources/js/vistas/partidaAdmin.js"></script>
   </body>
 </html>

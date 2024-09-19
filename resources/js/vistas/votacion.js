@@ -25,6 +25,7 @@ const divPostFinalizacion = document.querySelector(
 const p1 = votosJug1.querySelector("p");
 const p2 = votosJug2.querySelector("p");
 const timerVotacion = document.getElementById("timer");
+const modalImg = document.getElementById("modal_image");
 document.addEventListener("DOMContentLoaded", async function () {
     try {
         const response = await fetch(`/api/datosPartida/${id}`, {
@@ -92,6 +93,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                     divPostFinalizacion.querySelector(
                         "div.divGanador"
                     ).textContent = `El ganador es: ${responseData.ganador}`;
+                    if (responseData.ganador == responseData.jugador1) {
+                        imgJug1.classList.add("ganador");
+                    } else {
+                        imgJug2.classList.add("ganador");
+                    }
                 } else {
                     divPostFinalizacion.querySelector(
                         "div.divGanador"
@@ -126,11 +132,13 @@ document.addEventListener("click", function (evt) {
     }
 
     if (evt.target.id == "btnVotarJug1") {
+        imgJug1.classList.add("ganador");
         socket.emit("ganadorVotacion", {
             idPartida: id,
             ganador: divJugador1.children[0].textContent,
         });
     } else if (evt.target.id == "btnVotarJug2") {
+        imgJug2.classList.add("ganador");
         socket.emit("ganadorVotacion", {
             idPartida: id,
             ganador: divJugador2.children[0].textContent,
@@ -176,6 +184,11 @@ socket.on("finalizarVotacion", function (data) {
             divPostFinalizacion.querySelector(
                 "div.divGanador"
             ).textContent = `El ganador es: ${data.ganador}`;
+            if (data.ganador == divJugador1.children[0].textContent) {
+                imgJug1.classList.add("ganador");
+            } else {
+                imgJug2.classList.add("ganador");
+            }
         }
         btnVotarJug1.setAttribute("hidden", "true");
         btnVotarJug1.setAttribute("disabled", "true");
@@ -193,4 +206,12 @@ socket.on("finalizarVotacion", function (data) {
             votosJug2.classList.remove("d-inline-grid");
         }
     }
+});
+
+imgJug1.addEventListener("click", function() {
+    modalImg.setAttribute("src", imgJug1.getAttribute("src"));
+});
+
+imgJug2.addEventListener("click", function() {
+    modalImg.setAttribute("src", imgJug2.getAttribute("src"));
 });

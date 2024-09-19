@@ -12,6 +12,7 @@ const input1 = document.getElementById("input1");
 const input2 = document.getElementById("input2");
 const divImgGeneradasJug1 = document.querySelector(".divImgGeneradasJug1");
 const divImgGeneradasJug2 = document.querySelector(".divImgGeneradasJug2");
+const modalImg = document.getElementById("modal_image");
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const response = await fetch(
@@ -84,6 +85,13 @@ socket.on("jugador-imagenes", function (data) {
       const nuevaImagen = document.createElement("img");
       nuevaImagen.src = url;
       nuevaImagen.classList.add("imagesGeneradas");
+      nuevaImagen.setAttribute("data-bs-toggle", "modal");
+      nuevaImagen.setAttribute("data-bs-target", "#modalImagen");
+      nuevaImagen.setAttribute("role", "button");
+      nuevaImagen.onclick = () => {
+        //Setear src a img en model
+        modalImg.setAttribute("src", url);
+      }
 
       nuevaImagen.onload = () => {
         loader.style.display = "none";
