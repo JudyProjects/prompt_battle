@@ -1,4 +1,4 @@
-var socket = io.connect();
+let socket = io.connect();
 const id = window.location.pathname.split("/")[3];
 const divInfo = document.getElementById("info");
 const divError = document.getElementById("error");
@@ -114,7 +114,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (responseData.imgJug2) {
                 imgJug2.setAttribute("src", `${responseData.imgJug2}`);
             }
-            console.log("emitiendo obtenerVotos" + id);
             socket.emit('obtenerVotos', id);
         }
     } catch (error) {
@@ -153,7 +152,6 @@ document.addEventListener("click", function (evt) {
 
 socket.on("actualizarVotos", function (data) {
     if (data.idPartida == id) {
-        console.log(data.votacion);
         p1.innerText = data.votacion.jugador1;
         p2.innerText = data.votacion.jugador2;
     }
@@ -195,5 +193,4 @@ socket.on("finalizarVotacion", function (data) {
             votosJug2.classList.remove("d-inline-grid");
         }
     }
-    socket = io.disconnect();
 });

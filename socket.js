@@ -33,13 +33,6 @@ io.sockets.on("connection", function (socket) {
     }
   });
 
-  // Para consultar con Bernardo
-  /* socket.on('join', function (room) {
-        console.log("socket:" + socket.handshake.session.jugador);
-        socket.join(room);
-        console.log("Se conectó a room: " + room);
-    }); */
-
   // Actualiza la lista de jugadores disponibles en Lobby
   socket.on("obtenerJugadores", function () {
     socket.emit("updateJugadores", jugadores);
@@ -120,8 +113,6 @@ io.sockets.on("connection", function (socket) {
       jugador2: data.jugadores.jugador2,
     });
     const tiempoEnMilisegundos = data.tiempo * 60000;
-    // Aquí puedes agregar más lógica para hacer el seguimiento de la partida
-    // y luego emitir 'finalizarPartida' después del tiempo correspondiente.
     setTimeout(() => {
       io.sockets.emit("finalizarPartida", { idPartida: data.idPartida });
     }, tiempoEnMilisegundos + 5000);
@@ -146,13 +137,13 @@ io.sockets.on("connection", function (socket) {
       }
       //Actualiza partida en BD con la imagen seleccionada por el jugador que envió la imagen
       await funciones.editarPartida(data.idPartida, imgJug1, imgJug2, undefined, undefined);
-      io.sockets.emit("redirectAvotacion", {
-        idPartida: data.idPartida,
-        jugador: data.jugadorQueEnvia,
-      });
     } else {
       console.log("No se seleccionó imagen en partida");
     }
+    io.sockets.emit("redirectAvotacion", {
+      idPartida: data.idPartida,
+      jugador: data.jugadorQueEnvia,
+    });
   });
 
   // Cuando la partida es de voto manual, se llama aquí con el jugador que debió ganar
@@ -180,7 +171,7 @@ io.sockets.on("connection", function (socket) {
       idPartida: data.idPartida,
       jugadores: {
         jugador1: 0,
-        jugador2: 0,
+        jugador2: 0
       },
     };
     io.sockets.emit("nuevaVotacion", {
@@ -234,10 +225,8 @@ io.sockets.on("connection", function (socket) {
   });
 
   socket.on('obtenerVotos', function (data) {
-    console.log(data);
     for (const vot of votaciones) {
       if (vot.idPartida == data) {
-        console.log(vot.jugadores);
         socket.emit("actualizarVotos", {
           idPartida: data,
           votacion: vot.jugadores,

@@ -73,7 +73,6 @@ socket.on("jugador-imagenes", function (data) {
       data.aliasJug == aliasJug1.textContent
         ? document.querySelector(".divImgGeneradasJug1")
         : document.querySelector(".divImgGeneradasJug2");
-
     data.imagenes.forEach((url, index) => {
       const divImagen = document.createElement("div");
       divImagen.classList.add("image-container");
@@ -89,6 +88,12 @@ socket.on("jugador-imagenes", function (data) {
       nuevaImagen.onload = () => {
         loader.style.display = "none";
         nuevaImagen.style.display = "block";
+      };
+
+      nuevaImagen.onerror = () => {
+        const urlCambiar = nuevaImagen.getAttribute("src");
+        nuevaImagen.setAttribute('src', '');
+        nuevaImagen.setAttribute('src', urlCambiar);
       };
 
       divImagen.appendChild(nuevaImagen);

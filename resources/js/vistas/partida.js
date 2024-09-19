@@ -1,5 +1,5 @@
-var socket = io.connect();
-var llamadas = 0;
+let socket = io.connect();
+let llamadas = 0;
 const btnGenerar = document.getElementById("btnGenerar");
 const btnResultado = document.getElementById("btnResultado");
 const divImagenes = document.getElementById("divImagenesGeneradas");
@@ -10,23 +10,18 @@ const id = window.location.pathname.split("/")[3];
 const divInfo = document.getElementById("info");
 const divError = document.getElementById("error");
 const main = document.querySelector("main");
+let cantImagenes = 0;
 
-btnGenerar.addEventListener("click", () => {
-  var prompt = document.getElementById("floatingTextarea").value;
-  let imagenesEnviar = [];
+btnGenerar.addEventListener("click", async function() {
+  let prompt = document.getElementById("floatingTextarea").value;
   if (llamadas < 2) {
     if (prompt === undefined || prompt.trim() == "") {
       alert("Por favor, introduce un texto para generar la imagen.");
       return;
     }
-    var urls = generarImagenes(prompt, cantImagenes);
+    let urls = generarImagenes(prompt, cantImagenes);
     llamadas++;
-    socket.emit("jugadorImagenes", {
-      idPartida: id,
-      aliasJugador: localStorage.getItem("aliasJugador"),
-      imagenes: urls,
-    });
-
+    
     //Crea cada imagen
     urls.forEach((url, index) => {
       const divImagen = document.createElement("div");
@@ -62,8 +57,19 @@ btnGenerar.addEventListener("click", () => {
         nuevaImagen.style.display = "block";
       };
 
+      nuevaImagen.onerror = () => {
+        const urlCambiar = nuevaImagen.getAttribute("src");
+        nuevaImagen.setAttribute('src', '');
+        nuevaImagen.setAttribute('src', urlCambiar);
+      };
+      
       divImagen.appendChild(nuevaImagen);
       divImagenes.appendChild(divImagen);
+    });
+    socket.emit("jugadorImagenes", {
+      idPartida: id,
+      aliasJugador: localStorage.getItem("aliasJugador"),
+      imagenes: urls,
     });
   } else {
     alert("Has alcanzado el límite de llamadas permitidas.");
