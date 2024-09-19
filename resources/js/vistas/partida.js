@@ -155,8 +155,6 @@ socket.on("redirectAvotacion", function (data) {
     data.idPartida == id &&
     data.jugador == localStorage.getItem("aliasJugador")
   ) {
-    localStorage.removeItem("aliasJugador");
-    localStorage.clear();
     window.location.href = `/api/votacion/${id}`;
   }
 });

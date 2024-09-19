@@ -28,30 +28,35 @@ document.addEventListener("DOMContentLoaded", async function () {
   } catch (error) {
     console.log(error);
   }
+  $(".selectJugadores").select2({
+    multiple: true,
+    placeholder: "Seleccione dos jugadores",
+    maximumSelectionLength: 2
+  });
   socket.emit("obtenerJugadores");
 });
 
 // Actualiza lista de jugadores
 socket.on("updateJugadores", function (data) {
+  // Actualizar la lista UL
   listaJugadores.innerHTML = "";
   data.forEach((jugador) => {
     const liJugador = document.createElement("li");
     liJugador.textContent = jugador;
     listaJugadores.appendChild(liJugador);
   });
-  $(function () {
-    $(".selectJugadores").select2({
-      data: data,
-      multiple: true,
-      placeholder: "Seleccione dos jugadores",
-      maximumSelectionLength: 2,
-      language: {
-        maxLength: function () {
-          return "Solo puedes seleccionar hasta 2 jugadores";
-        },
-      },
-    });
+
+  // Vaciar las opciones del select2
+  $(".selectJugadores").empty();
+
+  // Recargar las nuevas opciones
+  data.forEach((jugador) => {
+    const newOption = new Option(jugador, jugador, false, false);
+    $(".selectJugadores").append(newOption);
   });
+
+  // Volver a inicializar el select2 si es necesario
+  $(".selectJugadores").trigger('change'); // Asegurarse de que el select2 se actualice
 });
 
 // Evento para cargar temas en la base de datos

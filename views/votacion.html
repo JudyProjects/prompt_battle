@@ -145,6 +145,7 @@
       </div>
     </main>
     <footer class="border-top align-content-center"></footer>
+    <script src="/resources/js/vistas/votacion.js"></script>
     <script type="text/javascript">
       var socket = io.connect();
       const id = window.location.pathname.split("/")[3];
@@ -175,15 +176,12 @@
       const timerVotacion = document.getElementById("timer");
       document.addEventListener("DOMContentLoaded", async function () {
         try {
-          const response = await fetch(
-            `/api/datosPartida/${id}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const response = await fetch(`/api/datosPartida/${id}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
           const responseData = await response.json();
           if (!response.ok) {
             //Cargar problema en div error
@@ -203,6 +201,15 @@
                   jugador2: responseData.jugador2,
                 });
               }
+            }
+
+            if (localStorage.getItem("aliasJugador")) {
+              await socket.emit(
+                "cancelarJugador",
+                localStorage.getItem("aliasJugador")
+              );
+              localStorage.removeItem("aliasJugador");
+              localStorage.clear();
             }
 
             if (!responseData.ganador) {
@@ -324,6 +331,7 @@
             votosJug2.classList.remove("d-inline-grid");
           }
         }
+        socket = io.disconnect();
       });
     </script>
   </body>
