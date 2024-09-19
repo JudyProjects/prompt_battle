@@ -232,6 +232,20 @@ io.sockets.on("connection", function (socket) {
       }
     }
   });
+
+  socket.on('obtenerVotos', function (data) {
+    console.log(data);
+    for (const vot of votaciones) {
+      if (vot.idPartida == data) {
+        console.log(vot.jugadores);
+        socket.emit("actualizarVotos", {
+          idPartida: data,
+          votacion: vot.jugadores,
+        });
+        break;
+      }
+    }
+  });
 });
 
 // Elimina el jugador disponible del array jugadores = []
