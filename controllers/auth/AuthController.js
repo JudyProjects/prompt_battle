@@ -3,13 +3,11 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
-var mongoose = require('mongoose');
 var config = require('../../config');
 const path = require('path');
 var User = require('../../models/User.model');
-const Partida = require('../../models/Partida.model');
 var VerifyToken = require('./VerifyToken');
-const TemaModel = require('../../models/Tema.model');
+const funciones = require('../../resources/js/funciones.js');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
@@ -62,7 +60,7 @@ router.get('/me2', VerifyToken, async function (req, res, next) {
 
 router.get('/obtenerTemas', VerifyToken, async function (req, res, next) {
 	try {
-		const temas = await TemaModel.find({});
+		const temas = await funciones.obtenerTemas();
 		if (temas.length == 0) return res.status(404).send("No hay temas.");
 		res.status(200).send(temas);
 	} catch (error) {
@@ -72,12 +70,8 @@ router.get('/obtenerTemas', VerifyToken, async function (req, res, next) {
 
 router.post('/cargarTema', VerifyToken, async function (req, res) {
 	try {
-		const tema = new TemaModel({
-			contenido: req.body.tema
-		});
-		await tema.save();
-
-		res.status(200).send(JSON.stringify(tema));
+		const tema = await funciones.crearTema(req.body.tema);
+		res.status(200).json(tema);
 	} catch (error) {
 		res.status(500).send(error.message);
 	}
@@ -85,16 +79,14 @@ router.post('/cargarTema', VerifyToken, async function (req, res) {
 
 router.post('/iniciarPartida', async function (req, res) {
 	try {
-		const partida = new Partida({
-			_id: new mongoose.Types.ObjectId(),
-			jugador1: req.body.jugador1,
-			jugador2: req.body.jugador2,
-			tiempo: req.body.tiempo,
-			cantImagenes: req.body.cantImagenes,
-			tipoVoto: req.body.tipoVoto,
-			tematica: req.body.tematica
-		});
-		await partida.save();
+		const partida = await iniciarPartida(
+			req.body.jugador1,
+			req.body.jugador2,
+			req.body.tiempo,
+			req.body.cantImagenes,
+			req.body.tipoVoto,
+			req.body.tematica
+		);
 		res.status(200).json(partida);
 	} catch (error) {
 		console.log(error);
