@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 // Actualiza lista de jugadores
 socket.on("updateJugadores", function (data) {
-  // Actualizar la lista UL
   listaJugadores.innerHTML = "";
   data.forEach((jugador) => {
     const liJugador = document.createElement("li");
