@@ -288,7 +288,7 @@ io.sockets.on('connection', function (socket) {
                     break;
                 }
             }
-        }, 60000);
+        }, 60000 + 3000);
     });
 
     // Aumenta el voto en 1 del jugador correspondiente

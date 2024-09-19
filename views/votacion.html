@@ -14,6 +14,7 @@
       rel="stylesheet"
     />
     <script src="/jquery/jquery.min.js"></script>
+    <script src="/resources/js/temporizador.js"></script>
     <script src="/resources/js/includeFooter.js"></script>
     <script
       src="/socket/client-dist/socket.io.js"
@@ -30,6 +31,7 @@
       </a>
       <h1 class="d-flex justify-content-center p-2">Votación</h1>
       <div class="parent">
+        <h4 id="timer" class="display-1">00:00</h4>
         <div class="div1">
           <div class="card text-center bg-black">
             <div class="card-header degradezGrisIzq divJugador1">
@@ -131,7 +133,7 @@
           </div>
         </div>
         <div class="div3 divPostFinalizacion" hidden>
-          <div class="d-flex text-center divGanador"></div>
+          <div class="d-flex justify-content-center divGanador"></div>
           <button
             type="submit"
             class="btn btn-outline-light mt-4"
@@ -170,6 +172,7 @@
       );
       const p1 = votosJug1.querySelector("p");
       const p2 = votosJug2.querySelector("p");
+      const timerVotacion = document.getElementById("timer");
       document.addEventListener("DOMContentLoaded", async function () {
         try {
           const response = await fetch(
@@ -194,11 +197,10 @@
               //Utilizar /me2 para verificar token
               btnLobby.removeAttribute("hidden");
               if (responseData.tipoVoto != "manual") {
-                console.log('initVotacion');
                 socket.emit("initVotacion", {
                   idPartida: responseData._id,
                   jugador1: responseData.jugador1,
-                  jugador2: responseData.jugador2
+                  jugador2: responseData.jugador2,
                 });
               }
             }
@@ -216,6 +218,7 @@
                 votosJug2.setAttribute("hidden", "true");
                 votosJug2.classList.remove("d-inline-grid");
               } else {
+                iniciarTemporizador(1);
                 btnVotarPublicoJug1.removeAttribute("hidden");
                 btnVotarPublicoJug1.removeAttribute("disabled");
                 btnVotarPublicoJug2.removeAttribute("hidden");
@@ -248,7 +251,6 @@
           console.error("Error:", error.message);
         }
       });
-
       document.addEventListener("click", function (evt) {
         if (evt.target.id == "btnVolverAJugar") {
           window.location.href = "/";
