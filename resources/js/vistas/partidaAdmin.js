@@ -13,6 +13,7 @@ const input2 = document.getElementById("input2");
 const divImgGeneradasJug1 = document.querySelector(".divImgGeneradasJug1");
 const divImgGeneradasJug2 = document.querySelector(".divImgGeneradasJug2");
 const modalImg = document.getElementById("modal_image");
+let cantImagenes;
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const response = await fetch(
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       tematica.textContent = responseData.tematica;
       iniciarTemporizador(responseData.tiempo);
       config.children[0].innerHTML += responseData.cantImagenes;
+      cantImagenes = responseData.cantImagenes;
       config.children[1].innerHTML += responseData.tipoVoto;
       aliasJug1.textContent = responseData.jugador1;
       aliasJug2.textContent = responseData.jugador2;
@@ -74,39 +76,41 @@ socket.on("jugador-imagenes", function (data) {
       data.aliasJug == aliasJug1.textContent
         ? document.querySelector(".divImgGeneradasJug1")
         : document.querySelector(".divImgGeneradasJug2");
-    data.imagenes.forEach((url, index) => {
-      const divImagen = document.createElement("div");
-      divImagen.classList.add("image-container");
+    if (divImagenes.children.length < cantImagenes * 2) {
+      data.imagenes.forEach((url, index) => {
+        const divImagen = document.createElement("div");
+        divImagen.classList.add("image-container");
 
-      const loader = document.createElement("div");
-      loader.classList.add("loader");
-      divImagen.appendChild(loader);
+        const loader = document.createElement("div");
+        loader.classList.add("loader");
+        divImagen.appendChild(loader);
 
-      const nuevaImagen = document.createElement("img");
-      nuevaImagen.src = url;
-      nuevaImagen.classList.add("imagesGeneradas");
-      nuevaImagen.setAttribute("data-bs-toggle", "modal");
-      nuevaImagen.setAttribute("data-bs-target", "#modalImagen");
-      nuevaImagen.setAttribute("role", "button");
-      nuevaImagen.onclick = () => {
-        //Setear src a img en model
-        modalImg.setAttribute("src", url);
-      }
+        const nuevaImagen = document.createElement("img");
+        nuevaImagen.src = url;
+        nuevaImagen.classList.add("imagesGeneradas");
+        nuevaImagen.setAttribute("data-bs-toggle", "modal");
+        nuevaImagen.setAttribute("data-bs-target", "#modalImagen");
+        nuevaImagen.setAttribute("role", "button");
+        nuevaImagen.onclick = () => {
+          //Setear src a img en model
+          modalImg.setAttribute("src", url);
+        }
 
-      nuevaImagen.onload = () => {
-        loader.style.display = "none";
-        nuevaImagen.style.display = "block";
-      };
+        nuevaImagen.onload = () => {
+          loader.style.display = "none";
+          nuevaImagen.style.display = "block";
+        };
 
-      nuevaImagen.onerror = () => {
-        const urlCambiar = nuevaImagen.getAttribute("src");
-        nuevaImagen.setAttribute('src', '');
-        nuevaImagen.setAttribute('src', urlCambiar);
-      };
+        nuevaImagen.onerror = () => {
+          const urlCambiar = nuevaImagen.getAttribute("src");
+          nuevaImagen.setAttribute('src', '');
+          nuevaImagen.setAttribute('src', urlCambiar);
+        };
 
-      divImagen.appendChild(nuevaImagen);
-      divImagenes.appendChild(divImagen);
-    });
+        divImagen.appendChild(nuevaImagen);
+        divImagenes.appendChild(divImagen);
+      });
+    }
   }
 });
 

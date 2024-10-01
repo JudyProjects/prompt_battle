@@ -1,5 +1,5 @@
 .gridContainer {
-    height: 95%;
+    height: 98%;
     justify-content: center;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -45,16 +45,20 @@
         grid-area: input1;
         justify-self: center;
         align-self: start;
-        width: 65%;
-        height: 145px;
+        width: 100%;
+        height: 250px;
+        line-height: 2ch;
+        padding: 0 3rem 0 3rem;
     }
 
     .inputJug2 {
         grid-area: input2;
         justify-self: center;
         align-self: start;
-        width: 65%;
-        height: 145px;
+        width: 100%;
+        height: 250px;
+        line-height: 2ch;
+        padding: 0 3rem 0 3rem;
     }
 
     .divImgGeneradasJug1 {
@@ -72,15 +76,16 @@
     }
 
     .image-container {
-        min-width: 200px;
-        min-height: 200px;
-        max-width: 208px;
+        min-width: 150px;
+        min-height: 100px;
+        max-height: 158px;
+        max-width: 158px;
         position: relative;
       }
 
     .imagesGeneradas {
-        width: 200px;
-        height: 200px;
+        width: 150px;
+        height: 150px;
         margin: 4px;
         animation-name: slide-in;
         animation-duration: 1s;
@@ -89,3 +94,52 @@
         border-radius: 5px;
     }
 }
+
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .loader:before,
+  .loader:after {
+    content: "";
+    position: absolute;
+    border-radius: 50px;
+    box-shadow: 0 0 0 3px inset #fff;
+    animation: l4 2.5s infinite;
+  }
+  .loader:after {
+    animation-delay: -1.25s;
+  }
+  @keyframes l4 {
+    0% {
+      inset: 0 20px 20px 0;
+    }
+    12.5% {
+      inset: 0 20px 0 0;
+    }
+    25% {
+      inset: 20px 20px 0 0;
+    }
+    37.5% {
+      inset: 20px 0 0 0;
+    }
+    50% {
+      inset: 20px 0 0 20px;
+    }
+    62.5% {
+      inset: 0 0 0 20px;
+    }
+    75% {
+      inset: 0 0 20px 20px;
+    }
+    87.5% {
+      inset: 0 0 20px 0;
+    }
+    100% {
+      inset: 0 20px 20px 0;
+    }
+  }
