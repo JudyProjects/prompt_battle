@@ -1,5 +1,6 @@
 let socket = io.connect();
 let llamadas = 0;
+let llamadasRestantes = 2;
 const btnGenerar = document.getElementById("btnGenerar");
 const btnResultado = document.getElementById("btnResultado");
 const divImagenes = document.getElementById("divImagenesGeneradas");
@@ -10,6 +11,7 @@ const id = window.location.pathname.split("/")[3];
 const divInfo = document.getElementById("info");
 const divError = document.getElementById("error");
 const main = document.querySelector("main");
+const cantLlamadas = document.querySelector('p.cantLlamadas');
 let cantImagenes = 0;
 
 btnGenerar.addEventListener("click", async function() {
@@ -21,6 +23,10 @@ btnGenerar.addEventListener("click", async function() {
     }
     let urls = generarImagenes(prompt, cantImagenes);
     llamadas++;
+    if (llamadas == 2) {
+      btnGenerar.setAttribute("disabled", "disabled");
+    }
+    cantLlamadas.textContent = `Prompts restantes: ${--llamadasRestantes}`;
     
     //Crea cada imagen
     urls.forEach((url, index) => {
@@ -37,6 +43,8 @@ btnGenerar.addEventListener("click", async function() {
         if (nuevaImagen.classList.contains("seleccionada")) {
           nuevaImagen.classList.remove("seleccionada");
           btnResultado.setAttribute("disabled", "disabled");
+          btnResultado.classList.remove("btn-light");
+          btnResultado.classList.add("btn-outline-light");
           return;
         }
         divImagenes.childNodes.forEach((div) => {
@@ -49,6 +57,8 @@ btnGenerar.addEventListener("click", async function() {
         });
         nuevaImagen.classList.add("seleccionada");
         btnResultado.removeAttribute("disabled");
+        btnResultado.classList.remove("btn-outline-light");
+        btnResultado.classList.add("btn-light");
       };
       nuevaImagen.classList.add("imagenesGeneradas");
 

@@ -25,6 +25,7 @@ ul {
     overflow-y: auto;
     align-content: center;
     line-height: 2.5ch;
+    max-height: 550px;
   }
 }
 
