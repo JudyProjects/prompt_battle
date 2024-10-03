@@ -43,6 +43,8 @@ btnGenerar.addEventListener("click", async function() {
         if (nuevaImagen.classList.contains("seleccionada")) {
           nuevaImagen.classList.remove("seleccionada");
           btnResultado.setAttribute("disabled", "disabled");
+          btnResultado.classList.remove("btn-light");
+          btnResultado.classList.add("btn-outline-light");
           return;
         }
         divImagenes.childNodes.forEach((div) => {
@@ -55,6 +57,8 @@ btnGenerar.addEventListener("click", async function() {
         });
         nuevaImagen.classList.add("seleccionada");
         btnResultado.removeAttribute("disabled");
+        btnResultado.classList.remove("btn-outline-light");
+        btnResultado.classList.add("btn-light");
       };
       nuevaImagen.classList.add("imagenesGeneradas");
 
