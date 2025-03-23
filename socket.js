@@ -23,6 +23,7 @@ router.use(sessionMiddleware);
 io.use(sharedsession(sessionMiddleware));
 
 io.sockets.on("connection", function (socket) {
+	console.log('un usuario se conectó');
   socket.emit("updateJugadores", jugadores);
 
   socket.on("disconnect", function () {
@@ -32,6 +33,18 @@ io.sockets.on("connection", function (socket) {
       //socket.destroy();
     }
   });
+
+socket.onAny((eventName, ...args) => {
+  console.log(eventName); // 'hello'
+  console.log(args); // [ 1, '2', { 3: '4', 5: ArrayBuffer (1) [ 6 ] } ]
+});
+
+  // Para consultar con Bernardo
+  /* socket.on('join', function (room) {
+        console.log("socket:" + socket.handshake.session.jugador);
+        socket.join(room);
+        console.log("Se conectó a room: " + room);
+    }); */
 
   // Actualiza la lista de jugadores disponibles en Lobby
   socket.on("obtenerJugadores", function () {

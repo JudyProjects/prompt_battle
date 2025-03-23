@@ -25,10 +25,23 @@ footer {
   margin: 0;
 }
 
-@media (max-width: 768px) {
+.mobile-footer {
+    display: none;
+}
+
+@media (max-width: 1023px) {
   footer {
-    height: 8vh;
+    height: fit-content;
   }
+
+  .mobile-footer {
+    display: block;
+    text-align: center;
+  }
+
+ .pc-footer {
+    display: none !important;
+ }
 }
 
 footer {
