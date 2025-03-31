@@ -47,19 +47,19 @@ h1 {
 	font-family: "Bungee Tint", sans-serif;
 }
 
-/* Media query para pantallas pequeñas (móviles) */
-@media (max-width: 768px) {
-  #background-img {
-    height: 40vh;
-    width: 100vw;
-  }
-
-  .btn-login {
-    right: 10px;
-    top: 5px;
-  }
-
-  h1 {
+@media (max-width: 767px) {
+    #background-img {
+        height: 40vh;
+        width: 100vw;
+    }
+    
+    .btn-login {
+        right: 10px;
+        top: 5px;
+    }
+    
+    h1 {
+      padding-top: 80px;
     font-size: 1.5rem;
   }
 

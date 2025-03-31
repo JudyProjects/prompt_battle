@@ -8,7 +8,7 @@
 }
 
 footer {
-  height: 14%;
+  height: 12vh;
   width: 100%;
   position: absolute;
   left: 0;
@@ -26,6 +26,7 @@ footer {
 }
 
 .mobile-footer {
+    font-size: 0.9rem;
     display: none;
 }
 

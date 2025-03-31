@@ -2,31 +2,31 @@ main {
 	padding: 2%;
 }
 
+@media (max-width: 767px) {
+    .divIzq, .divDer {
+        background-color: rgba(71, 53, 53, 0.441);
+        border-radius: 10px;
+    }
+
+    body {
+        height: auto !important;
+    }
+}
+
 ul {
 	list-style-type: none;
 	padding: 10px;
 	margin: 0;
 }
 
-.divIzquierda-arriba {
-	grid-template-rows: 1fr 3fr 5fr;
-	grid-template-areas:
-		"header"
-		"lista"
-		"lista";
+#listaTemas {
+	line-height: 2.5ch;
+    height: 200px;
+}
 
-	.divIA-texto {
-		grid-area: header;
-		align-self: end;
-	}
-
-	#listaTemas {
-		grid-area: lista;
-		overflow-y: auto;
-		align-content: center;
-		line-height: 2.5ch;
-		max-height: 550px;
-	}
+#listaJugadores {
+    line-height: 2.5ch;
+    height: 200px;
 }
 
 #btnCerrarSesion {
@@ -36,113 +36,44 @@ ul {
 	top: 10px;
 }
 
-.divIzquierda-abajo {
-	grid-template-columns: 3fr 1fr;
-	grid-template-rows: 1fr;
-	column-gap: 10px;
-
-	#cargarTemas {
-		width: 100%;
-		grid-column: -3;
-	}
-
-	#btnCargarTemas {
-		grid-column-start: -2;
-	}
+#btnIniciarPartida {
+    width: fit-content;
 }
 
-.divDerecha-arriba {
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr 3fr 5fr;
-	grid-template-areas:
-		"header1    header2"
-		"listaJugadores select2 "
-		"listaJugadores opciones";
-	column-gap: 10px;
-
-	#divDA-seleccionaJugadores {
-		grid-area: header2;
-		align-self: end;
-	}
-
-	#divDA-opcionesTexto {
-		margin: 0;
-	}
-
-	#divDA-opcionesPartida {
-		grid-area: opciones;
-		align-self: center;
-
-		legend {
-			margin: 0;
-			font-size: 1em;
-		}
-	}
-
-	#divDA-textLista {
-		grid-area: header1;
-		align-self: end;
-	}
-
-	#listaJugadores {
-		grid-area: listaJugadores;
-		overflow-y: auto;
-		align-content: center;
-		line-height: 2.5ch;
-	}
-
-	.selectJugadores {
-		grid-area: select2;
-		align-content: start;
-	}
-}
-
-.divDerecha-abajo {
-	grid-column-start: 2;
-	grid-row-start: 2;
-	align-self: end;
-	justify-self: center;
+legend {
+    margin: 0;
+    font-size: 1em;
 }
 
 .contenedor {
 	height: 70vh;
 	justify-content: center;
-    
-}
-
-@media (min-width: 768px) {
-    .contenedor {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 6fr 1fr;
-    }
 }
 
 @media (max-width: 767px) {
     .contenedor {
-        display: flex;
-        flex-direction: column;
+        height: 100% !important;
     }
-}
 
-@media (max-width: 1388px) {
-    .contenedor {
-        height: 70vh;
-    }
-}
-
-@media (max-width: 1130px) {
-    .contenedor {
-        height: 20vh;
-
-        .contenedor h2 {
-            font-size: 1rem;
-        }
+    #listaJugadores, #listaTemas {
+        line-height: 24px;
     }
 }
 
 .select2 {
 	height: 31px !important;
+}
+
+.divTemas {
+    @media (max-width: 1023px) {
+        height: 250px !important;
+    }
+}
+
+.divJugs {
+    @media (max-width: 1023px) {
+        height: 250px !important;
+    }
 }
 
 .select2-container--default

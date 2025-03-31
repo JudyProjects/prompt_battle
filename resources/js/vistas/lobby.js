@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   $(".selectJugadores").select2({
     multiple: true,
-    placeholder: "Seleccione dos jugadores",
     maximumSelectionLength: 2
   });
   socket.emit("obtenerJugadores");

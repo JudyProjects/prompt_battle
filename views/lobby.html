@@ -29,7 +29,7 @@
 		></script>
 	</head>
 	<body>
-		<main class="text-center d-flex flex-column">
+		<main class="text-center d-lg-block d-flex flex-lg-row flex-column">
 			<h1 class="display-5 mt-lg-0 mt-5 pt-lg-0 pt-3">Lobby</h1>
 			<button
 				type="submit"
@@ -38,145 +38,184 @@
 			>
 				Cerrar sesión
 			</button>
-			<div class="contenedor">
-				<div class="d-grid divIzquierda-arriba px-3">
-					<h2 class="divIA-texto h5 mx-0">Lista de temas</h2>
-					<ul
-						id="listaTemas"
-						class="bg-dark bg-gradient rounded-4"
-					></ul>
-				</div>
-				<div class="d-grid divDerecha-arriba px-3">
-					<h2 id="divDA-textLista" class="mx-0 h5">
-						Lista de jugadores
-					</h2>
-					<h2 id="divDA-seleccionaJugadores" class="mx-0 h5">
-						Seleccionar jugadores
-					</h2>
-					<ul
-						id="listaJugadores"
-						class="bg-dark bg-gradient rounded-4"
-					></ul>
-					<select
-						class="selectJugadores"
-						name="jugadores[]"
-						id="jugadores"
-					></select>
-					<div id="divDA-opcionesPartida">
-						<p id="divDA-opcionesTexto">Opciones de partida</p>
-						<hr />
-						<fieldset class="my-3">
-							<legend class="text-danger fw-semibold">
-								Tiempo de juego (minutos)
-							</legend>
-							<span class="mx-1">
+			<div class="contenedor d-flex flex-column flex-fill">
+				<div class="row h-100 px-2 mx-0">
+					<div
+						class="divIzq col-lg-6 py-lg-2 py-3 d-flex flex-column justify-content-between"
+					>
+						<div
+							class="d-flex flex-column divTemas px-3 flex-grow-1"
+						>
+							<h3 class="divIA-texto mx-0">Lista de temas</h3>
+							<ul
+								id="listaTemas"
+								class="bg-dark bg-gradient rounded-4 d-flex flex-column justify-content-center flex-fill overflow-y-auto"
+							></ul>
+						</div>
+						<div
+							class="d-flex justify-content-between divIzquierda-abajo px-3 text-start align-items-end mt-4"
+						>
+							<div class="w-100 me-lg-3 me-1">
+								<label for="cargarTemas" class=""
+									>Cargar temas</label
+								>
 								<input
-									type="radio"
-									id="1min"
-									value="1"
-									name="tiempoJuego"
+									type="text"
+									id="cargarTemas"
+									class="form-control"
 								/>
-								<label for="1min">1</label>
-							</span>
-							<span class="mx-1">
-								<input
-									type="radio"
-									id="2min"
-									value="2"
-									name="tiempoJuego"
-								/>
-								<label for="2min">2</label>
-							</span>
-							<span class="mx-1">
-								<input
-									type="radio"
-									id="3min"
-									value="3"
-									name="tiempoJuego"
-								/>
-								<label for="3min">3</label>
-							</span>
-						</fieldset>
+							</div>
+							<button
+								type="submit"
+								id="btnCargarTemas"
+								class="btn btn-outline-light px-lg-5"
+							>
+								Cargar
+							</button>
+						</div>
+					</div>
+					<div
+						class="divDer mt-lg-0 mt-3 mb-lg-0 mb-3 col-lg-6 py-lg-2 py-3 d-flex justify-content-between flex-column"
+					>
+						<div class="px-3 row flex-fill mx-0">
+							<div class="col-lg-6 d-flex divJugs flex-column">
+								<h3 id="divDA-textLista" class="mx-0">
+									Lista de jugadores
+								</h3>
+								<ul
+									id="listaJugadores"
+									class="bg-dark bg-gradient rounded-4 flex-fill overflow-y-auto"
+								></ul>
+							</div>
+							<div
+								class="col-lg-6 d-flex flex-column justify-content-between"
+							>
+								<div>
+									<h3
+										id="divDA-seleccionaJugadores"
+										class="mx-0 mt-lg-0 mt-3"
+									>
+										Seleccionar jugadores
+									</h3>
+									<div class="w-100">
+										<select
+											class="selectJugadores w-100 h-fit"
+											name="jugadores[]"
+											id="jugadores"
+										></select>
+									</div>
+								</div>
 
-						<fieldset class="my-3">
-							<legend class="text-danger fw-semibold">
-								Cantidad de imagenes a generar
-							</legend>
-							<span class="mx-1">
-								<input
-									type="radio"
-									id="1_img"
-									value="1"
-									name="cantImagenes"
-								/>
-								<label for="1_img">1</label>
-							</span>
-							<span class="mx-1">
-								<input
-									type="radio"
-									id="2_img"
-									value="2"
-									name="cantImagenes"
-								/>
-								<label for="2_img">2</label>
-							</span>
-							<span class="mx-1">
-								<input
-									type="radio"
-									id="3_img"
-									value="3"
-									name="cantImagenes"
-								/>
-								<label for="3_img">3</label>
-							</span>
-						</fieldset>
-						<fieldset class="my-3">
-							<legend class="text-danger fw-semibold">
-								Tipo de ganador
-							</legend>
-							<span class="mx-2">
-								<input
-									type="radio"
-									id="manual"
-									value="manual"
-									name="tipoGanador"
-								/>
-								<label for="manual">Manual</label>
-							</span>
-							<span class="mx-2">
-								<input
-									type="radio"
-									id="publico"
-									value="publico"
-									name="tipoGanador"
-								/>
-								<label for="publico">Público</label>
-							</span>
-						</fieldset>
+								<div id="divDA-opcionesPartida" class="mt-lg-0 mt-4">
+									<p id="divDA-opcionesTexto">
+										Opciones de partida
+									</p>
+									<hr />
+									<fieldset class="my-3">
+										<legend class="text-danger fw-semibold">
+											Tiempo de juego (minutos)
+										</legend>
+										<span class="mx-1">
+											<input
+												type="radio"
+												id="1min"
+												value="1"
+												name="tiempoJuego"
+											/>
+											<label for="1min">1</label>
+										</span>
+										<span class="mx-1">
+											<input
+												type="radio"
+												id="2min"
+												value="2"
+												name="tiempoJuego"
+											/>
+											<label for="2min">2</label>
+										</span>
+										<span class="mx-1">
+											<input
+												type="radio"
+												id="3min"
+												value="3"
+												name="tiempoJuego"
+											/>
+											<label for="3min">3</label>
+										</span>
+									</fieldset>
+
+									<fieldset class="my-3">
+										<legend class="text-danger fw-semibold">
+											Cantidad de imagenes a generar
+										</legend>
+										<span class="mx-1">
+											<input
+												type="radio"
+												id="1_img"
+												value="1"
+												name="cantImagenes"
+											/>
+											<label for="1_img">1</label>
+										</span>
+										<span class="mx-1">
+											<input
+												type="radio"
+												id="2_img"
+												value="2"
+												name="cantImagenes"
+											/>
+											<label for="2_img">2</label>
+										</span>
+										<span class="mx-1">
+											<input
+												type="radio"
+												id="3_img"
+												value="3"
+												name="cantImagenes"
+											/>
+											<label for="3_img">3</label>
+										</span>
+									</fieldset>
+
+									<fieldset class="my-3">
+										<legend class="text-danger fw-semibold">
+											Tipo de ganador
+										</legend>
+										<span class="mx-2">
+											<input
+												type="radio"
+												id="manual"
+												value="manual"
+												name="tipoGanador"
+											/>
+											<label for="manual">Manual</label>
+										</span>
+										<span class="mx-2">
+											<input
+												type="radio"
+												id="publico"
+												value="publico"
+												name="tipoGanador"
+											/>
+											<label for="publico">Público</label>
+										</span>
+									</fieldset>
+								</div>
+							</div>
+						</div>
+						<div class="w-100 h-fit mt-5 align-self-end">
+							<button
+								id="btnIniciarPartida"
+								class="divDerecha-abajo px-3 btn btn-outline-light"
+							>
+								Iniciar partida
+							</button>
+						</div>
 					</div>
 				</div>
-				<div
-					class="d-grid divIzquierda-abajo px-3 text-start align-items-end"
-				>
-					<label for="cargarTemas" class="">Cargar temas</label>
-					<input type="text" id="cargarTemas" class="form-control" />
-					<button
-						type="submit"
-						id="btnCargarTemas"
-						class="btn btn-outline-light"
-					>
-						Cargar
-					</button>
-				</div>
-				<button
-					id="btnIniciarPartida"
-					class="divDerecha-abajo px-3 btn btn-outline-light"
-				>
-					Iniciar partida
-				</button>
 			</div>
 		</main>
-		<footer class="border-top align-content-center"></footer>
+		<footer class="border-top align-content-center position-static"></footer>
 		<script src="/resources/js/vistas/lobby.js"></script>
 	</body>
 </html>

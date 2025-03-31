@@ -7,6 +7,21 @@
   }
 }
 
+#info {
+    display: flex;
+    justify-content: center;
+    align-items`: center;
+    min-height: 88vh;
+    min-width: 100vw;
+}
+
+#error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 88vh;
+}
+
 #btnVolver {
   position: relative;
   height: 40px;
