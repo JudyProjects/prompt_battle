@@ -90,9 +90,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             } else {
                 divPostFinalizacion.removeAttribute("hidden");
                 if (responseData.ganador != "empate") {
+                    const p = document.createElement("p");
+                    p.textContent = responseData.ganador;
                     divPostFinalizacion.querySelector(
                         "div.divGanador"
-                    ).textContent = `El ganador es: ${responseData.ganador}`;
+                    ).append(p);
                     if (responseData.ganador == responseData.jugador1) {
                         imgJug1.classList.add("ganador");
                     } else {

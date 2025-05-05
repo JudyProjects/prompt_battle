@@ -1,16 +1,55 @@
 body {
-  background: rgb(5,5,5);
-  background: linear-gradient(164deg, rgba(5,5,5,1) 0%, rgba(32,32,32,1) 100%); 
-  height: 100vh;
+	background: rgb(5, 5, 5);
+	background: linear-gradient(
+		164deg,
+		rgba(5, 5, 5, 1) 0%,
+		rgba(32, 32, 32, 1) 100%
+	);
+	height: 100vh;
 }
-main {
-  height: 85%;
-  font-family: "Bungee Tint", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  }
 
-  #timer {
-    color: green !important;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  }
+.h-fit {
+    height: fit-content;
+}
+
+.w-fit {
+    height: fit-content;
+}
+
+.custom-w-75 {
+    width: 100% !important;
+
+    @media (min-width: 768px) {
+        width: 75% !important;
+    }
+}
+
+main {
+	color: #fff;
+	font-family: "Montserrat", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+    height: 88vh;
+}
+
+@media (max-width: 767px) {
+    main {
+        height: auto !important;
+    }
+    #timer {
+        font-size: 10svw !important;
+    }
+}   
+
+#timer {
+	color: green !important;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-size: 3vw;
+    font-weight: 300;
+}
+
+button,
+.btn-prompt,
+h1 {
+	font-family: "Bungee Tint", sans-serif !important;
+}

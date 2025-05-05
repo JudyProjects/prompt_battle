@@ -1,150 +1,154 @@
 @keyframes slide-in {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+
+main {
+    height: 90svh !important;
+}
+
+#info {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 88vh;
+	min-width: 100vw;
+}
+
+#error {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 88vh;
 }
 
 #btnVolver {
-  position: relative;
-  height: 40px;
-  width: 70px;
-  left: 20px;
-  top: -50px;
+	position: relative;
+	height: 40px;
+	width: 70px;
+	left: 20px;
+	top: -50px;
 }
 
 #divImagenesGeneradas {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
+	display: flex;
+    flex-wrap: wrap;
+    max-height: 250px;
+    overflow-y: auto;
+    justify-content: center;
 }
 
 .imagenesGeneradas {
-  width: 200px;
-  height: 200px;
-  margin: 4px;
-  animation-name: slide-in;
-  animation-duration: 1s;
-  border: 2px solid red;
-  display: none;
-  border-radius: 5px;
-  cursor: pointer;
+	width: 200px;
+	height: 200px;
+	margin: 4px;
+	animation-name: slide-in;
+	animation-duration: 1s;
+	border: 2px solid red;
+	display: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
-.seleccionada{
-  border: 5px solid rgb(245, 223, 34);
-  border-radius: 5px;
+.seleccionada {
+	border: 5px solid rgb(245, 223, 34);
+	border-radius: 5px;
 }
 
 .elegida {
-  border: 5px solid green;
-  border-radius: 5px;
+	border: 5px solid green;
+	border-radius: 5px;
 }
 
 .image-container {
-  min-width: 200px;
-  min-height: 200px;
-  max-width: 208px;
-  position: relative;
+	min-width: 200px;
+	min-height: 200px;
+	max-width: 208px;
+	position: relative;
+}
+
+@media (max-width: 1023px) {
+    .parent {
+        flex-direction: column !important;
+    }
+
+    .form-floating {
+        flex: 1;
+    } 
 }
 
 .parent {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr 5fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  height: 70vh;
-  grid-template-areas:
-    "Temporizador Tematica"
-    "Prompt IA";
+    display: flex;
+    height: 70vh;
 }
 
-.div1 {
-  grid-area: 1 / 1 / 3 / 3;
-}
-.div2 {
-  grid-area: 1 / 1 / 2 / 2;
-  text-align: center;
-  align-content: center;
+.divIzq {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+    #timer + div {
+        height: 250px;
+    }
 }
 
-.div3 {
-  grid-area: 1 / 2 / 2 / 3;
-  text-align: center;
-  align-content: center;
-}
-.div3 p {
-  font-size: large;
-}
+.divDer {
+	display: flex;
+    flex-direction: column;
+	align-items: center;
 
-.div3 label {
-  font-size: xx-large;
-}
-.div4 {
-  grid-area: 2 / 1 / 3 / 2;
-  text-align: center;
-  align-content: center;
-  justify-content: center;
-  padding: 40px;
-}
 
-.div4 div {
-  height: 20vh;
-}
-
-.div5 {
-  grid-area: 2 / 2 / 3 / 3;
-  text-align: center;
 }
 
 .loader {
-  width: 65px;
-  aspect-ratio: 1;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+	width: 65px;
+	aspect-ratio: 1;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 .loader:before,
 .loader:after {
-  content: "";
-  position: absolute;
-  border-radius: 50px;
-  box-shadow: 0 0 0 3px inset #fff;
-  animation: l4 2.5s infinite;
+	content: "";
+	position: absolute;
+	border-radius: 50px;
+	box-shadow: 0 0 0 3px inset #fff;
+	animation: l4 2.5s infinite;
 }
 .loader:after {
-  animation-delay: -1.25s;
+	animation-delay: -1.25s;
 }
 @keyframes l4 {
-  0% {
-    inset: 0 35px 35px 0;
-  }
-  12.5% {
-    inset: 0 35px 0 0;
-  }
-  25% {
-    inset: 35px 35px 0 0;
-  }
-  37.5% {
-    inset: 35px 0 0 0;
-  }
-  50% {
-    inset: 35px 0 0 35px;
-  }
-  62.5% {
-    inset: 0 0 0 35px;
-  }
-  75% {
-    inset: 0 0 35px 35px;
-  }
-  87.5% {
-    inset: 0 0 35px 0;
-  }
-  100% {
-    inset: 0 35px 35px 0;
-  }
+	0% {
+		inset: 0 35px 35px 0;
+	}
+	12.5% {
+		inset: 0 35px 0 0;
+	}
+	25% {
+		inset: 35px 35px 0 0;
+	}
+	37.5% {
+		inset: 35px 0 0 0;
+	}
+	50% {
+		inset: 35px 0 0 35px;
+	}
+	62.5% {
+		inset: 0 0 0 35px;
+	}
+	75% {
+		inset: 0 0 35px 35px;
+	}
+	87.5% {
+		inset: 0 0 35px 0;
+	}
+	100% {
+		inset: 0 35px 35px 0;
+	}
 }

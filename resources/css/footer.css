@@ -8,7 +8,7 @@
 }
 
 footer {
-  height: 14%;
+  height: 12vh;
   width: 100%;
   position: absolute;
   left: 0;
@@ -25,10 +25,25 @@ footer {
   margin: 0;
 }
 
-@media (max-width: 768px) {
+.mobile-footer {
+    font-size: 0.9rem;
+    display: none;
+}
+
+@media (max-width: 1023px) {
   footer {
-    height: 8vh;
+    height: 10svh;
+    position: static;
   }
+
+  .mobile-footer {
+    display: block;
+    text-align: center;
+  }
+
+ .pc-footer {
+    display: none !important;
+ }
 }
 
 footer {

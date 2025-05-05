@@ -1,62 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Battle</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
-      rel="stylesheet"
-    />
-    <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/resources/css/footer.css" />
-    <link rel="stylesheet" href="/resources/css/app.css" />
-    <link rel="stylesheet" href="/resources/css/index.css" />
-    <script src="/resources/js/includeFooter.js"></script>
-    <script
-      src="/socket/client-dist/socket.io.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-    <main class="text-center">
-      <div id="overlay"></div>
-      <img
-        id="background-img"
-        src="../resources/Images/background_0.jpg"
-        alt="Background"
-      />
-      <h1 class="fs-3 pt-5">Prompt Battle</h1>
-      <a
-        href="/api/auth/login"
-        type="button"
-        class="btn btn-outline-light btn-login"
-        >Iniciar sesión</a
-      >
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Prompt Battle</title>
+		<link rel="stylesheet" href="/css/bootstrap.min.css" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="/resources/css/footer.css" />
+		<link rel="stylesheet" href="/resources/css/app.css" />
+		<link rel="stylesheet" href="/resources/css/index.css" />
+		<script src="/resources/js/includeFooter.js"></script>
 
-      <div class="p-4">
-        <p class="fs-4 m-0">¿Quieres jugar?</p>
-        <p class="m-0 mb-1 fs-5">
-          ¡Ingresa tu nombre debajo y espera a tu turno!
-        </p>
+		<script
+			src="/socket/client-dist/socket.io.js"
+			crossorigin="anonymous"
+		></script>
+	</head>
+	<body>
+		<div
+			class="modal fade"
+			id="waitingModal"
+			data-bs-backdrop="static"
+			tabindex="-10"
+		>
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content bg-black p-3">
+					<div
+						class="modal-body text-center text-white d-flex flex-column justify-content-center"
+					>
+						<p class="fs-5">
+							Espera a que se te redirija a la partida
+						</p>
+						<p class="fs-4">
+							Jugador:
+							<span id="currentPlayer" class="fw-semibold"></span>
+						</p>
+						<div class="loader"></div>
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<button
+							type="button"
+							id="cancelPlayer"
+							class="btn btn-outline-light m-3"
+							data-bs-dismiss="modal"
+						>
+							Cancelar
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<main class="text-center">
+			<div id="overlay"></div>
+			<img
+				id="background-img"
+				src="../resources/Images/background_0.jpg"
+				alt="Background"
+			/>
+			<h1 class="fs-3 pt-lg-5">Prompt Battle</h1>
+			<a
+				href="/api/auth/login"
+				type="button"
+				class="btn btn-outline-light btn-login btn-prompt"
+				>Iniciar sesión</a
+			>
 
-        <label for="aliasJugador"
-          >Alias:
-          <input id="aliasJugador" type="text" class="form-control" />
-        </label>
-        <button
-          type="submit"
-          formtarget="aliasJugador"
-          class="btn btn-outline-light btn-jugar fs-5"
-        >
-          ¡Jugar!
-        </button>
-      </div>
-    </main>
-    <footer
-      class="border-top align-content-center"
-    ></footer>
-    <script src="/resources/js/vistas/index.js"></script>
-  </body>
+			<div class="p-4">
+				<p class="fs-4 m-0">¿Quieres jugar?</p>
+				<p class="m-0 mb-1 fs-5">
+					¡Ingresa tu nombre debajo y espera a tu turno!
+				</p>
+
+				<label for="aliasJugador"
+					>Alias:
+					<input id="aliasJugador" type="text" class="form-control" />
+				</label>
+				<div class="d-flex justify-content-center">
+					<p
+						class="px-5 py-2 mt-2 border rounded d-none"
+						id="error-message"
+					>
+						¡Ingrese un nombre válido para jugar!
+					</p>
+				</div>
+				<button
+					type="submit"
+					formtarget="aliasJugador"
+					data-bs-toggle="modal"
+					data-bs-target="#waitingModal"
+					class="btn btn-outline-light btn-jugar btn-prompt fs-5"
+				>
+					¡Jugar!
+				</button>
+			</div>
+		</main>
+		<footer class="border-top align-content-center"></footer>
+		<script src="/resources/js/vistas/index.js"></script>
+		<script src="/js/bootstrap.bundle.js"></script>
+		<script src="/jquery/jquery.min.js"></script>
+	</body>
 </html>

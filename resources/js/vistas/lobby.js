@@ -9,7 +9,6 @@ const btnCerrarSesion = document.querySelector("#btnCerrarSesion");
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const response = await fetch("/api/auth/obtenerTemas");
-    console.log(response);
     if (response.status == 404) {
       const li = document.createElement("li");
       li.classList.add("vacio");
@@ -30,7 +29,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   $(".selectJugadores").select2({
     multiple: true,
-    placeholder: "Seleccione dos jugadores",
     maximumSelectionLength: 2
   });
   socket.emit("obtenerJugadores");

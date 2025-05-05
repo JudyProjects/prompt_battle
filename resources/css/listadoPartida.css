@@ -6,6 +6,18 @@
    margin-top: 2vh;
 }
 
+@media (max-width: 1023px) {
+    .listadoPartida {
+        width: 75vw;
+        min-height: 55vh;
+        max-height: 60vh;
+    }
+
+    main {
+        height: 90svh !important;
+    }
+}
+
 #btnVolverAJugar{
    position: absolute;
    width: 25vw;

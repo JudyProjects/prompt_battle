@@ -1,190 +1,199 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <script src="/js/bootstrap.bundle.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="/resources/css/footer.css" />
-    <link rel="stylesheet" href="/resources/css/app.css" />
-    <link rel="stylesheet" href="/resources/css/votacion.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
-      rel="stylesheet"
-    />
-    <script src="/jquery/jquery.min.js"></script>
-    <script src="/resources/js/temporizador.js"></script>
-    <script src="/resources/js/includeFooter.js"></script>
-    <script
-      src="/socket/client-dist/socket.io.js"
-      crossorigin="anonymous"
-    ></script>
-    <title>Votación</title>
-  </head>
-  <body>
-    <div class="info"></div>
-    <div class="error" hidden></div>
-    <main hidden>
-      <a href="/api/auth/lobby" class="btnLobby" hidden>
-        <button class="btn btn-outline-light">Lobby</button>
-      </a>
-      <a href="/api/listadoPartida" class="btnPartidas">
-        <button class="btn btn-outline-light">Partidas</button>
-      </a>
-      <h1 class="d-flex justify-content-center p-2">Votación</h1>
-      <div class="parent">
-        <h4 id="timer" class="display-1" hidden>00:00</h4>
-        <div class="div1">
-          <div class="card text-center bg-black">
-            <div class="card-header degradezGrisIzq divJugador1">
-              <!-- alias1 -->
-            </div>
-            <div class="card-body d-flex flex-column align-items-center">
-              <img
-                role="button"
-                src="/resources/Images/logoUtec.png"
-                alt="Imagen IA 1"
-                class="imgJug1 row"
-                data-bs-toggle="modal"
-                data-bs-target="#modalImagen"
-              />
-              <button
-                type="submit"
-                class="btn btn-outline-light row mt-3"
-                id="btnVotarJug1"
-                hidden
-                disabled
-              >
-                Determinar jugador
-              </button>
-              <button
-                type="submit"
-                class="btn btn-outline-light row mt-3"
-                id="btnVotarPublicoJug1"
-                hidden
-                disabled
-              >
-                Votar
-              </button>
-            </div>
-            <div
-              class="card-footer text-body-secondary degradezGrisIzq d-inline-grid"
-              id="votosJug1"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                fill="yellow"
-                class="bi bi-stars"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"
-                />
-              </svg>
-              <p>0</p>
-            </div>
-          </div>
-        </div>
-        <div class="div2">
-          <div class="card text-center bg-black">
-            <div class="card-header degradezGrisDer divJugador2">
-              <!-- alias2 -->
-            </div>
-            <div class="card-body d-flex flex-column align-items-center">
-              <img
-                role="button"
-                src="/resources/Images/logoUtec.png"
-                alt="Imagen IA 2"
-                class="imgJug2"
-                data-bs-toggle="modal"
-                data-bs-target="#modalImagen"
-              />
-              <button
-                type="submit"
-                class="btn btn-outline-light row mt-3"
-                id="btnVotarJug2"
-                hidden
-                disabled
-              >
-                Determinar ganador
-              </button>
-              <button
-                type="submit"
-                class="btn btn-outline-light row mt-3"
-                id="btnVotarPublicoJug2"
-                hidden
-                disabled
-              >
-                Votar
-              </button>
-            </div>
-            <div
-              class="card-footer text-body-secondary degradezGrisDer d-inline-grid"
-              id="votosJug2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                fill="yellow"
-                class="bi bi-stars"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"
-                />
-              </svg>
-              <p>0</p>
-            </div>
-          </div>
-        </div>
-        <div class="div3 divPostFinalizacion" hidden>
-          <div class="d-flex justify-content-center divGanador"></div>
-          <button
-            type="submit"
-            class="btn btn-outline-light mt-4"
-            id="btnVolverAJugar"
-          >
-            ¡Volver a jugar!
-          </button>
-        </div>
-      </div>
-    </main>
-    <footer class="border-top align-content-center"></footer>
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="modalImagen"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <img
-              src=""
-              alt="Imagen en modal"
-              id="modal_image"
-              class="w-100 h-auto"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <script src="/resources/js/vistas/votacion.js"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/css/bootstrap.min.css" />
+		<script src="/js/bootstrap.bundle.js"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="/resources/css/footer.css" />
+		<link rel="stylesheet" href="/resources/css/app.css" />
+		<link rel="stylesheet" href="/resources/css/votacion.css" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="/jquery/jquery.min.js"></script>
+		<script src="/resources/js/temporizador.js"></script>
+		<script src="/resources/js/includeFooter.js"></script>
+		<script
+			src="/socket/client-dist/socket.io.js"
+			crossorigin="anonymous"
+		></script>
+		<title>Votación</title>
+	</head>
+	<body>
+		<div class="info"></div>
+		<div class="error" hidden></div>
+		<main hidden class="position-relative d-flex flex-column flex-fill">
+			<a href="/api/auth/lobby" class="btnLobby" hidden>
+				<button class="btn btn-outline-light">Lobby</button>
+			</a>
+			<a href="/api/listadoPartida" class="btnPartidas">
+				<button class="btn btn-outline-light">Partidas</button>
+			</a>
+			<h1 class="d-flex justify-content-center p-2">Votación</h1>
+			<h4 id="timer" class="display-1" hidden>00:00</h4>
+			<div class="parent row-cols-lg-2 flex-lg-row flex-column  px-lg-5">
+				<div class="div1">
+					<div class="card text-center bg-black">
+						<div class="card-header degradezGrisIzq divJugador1">
+							<!-- alias1 -->
+						</div>
+						<div
+							class="card-body d-flex flex-column align-items-center"
+						>
+							<img
+								role="button"
+								src="/resources/Images/logoUtec.png"
+								alt="Imagen IA 1"
+								class="imgJug1 row"
+								data-bs-toggle="modal"
+								data-bs-target="#modalImagen"
+							/>
+							<button
+								type="submit"
+								class="btn btn-outline-light row mt-3"
+								id="btnVotarJug1"
+								hidden
+								disabled
+							>
+								Determinar jugador
+							</button>
+							<button
+								type="submit"
+								class="btn btn-outline-light row mt-3"
+								id="btnVotarPublicoJug1"
+								hidden
+								disabled
+							>
+								Votar
+							</button>
+						</div>
+						<div
+							class="card-footer text-body-secondary degradezGrisIzq d-inline-grid"
+							id="votosJug1"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="30"
+								height="30"
+								fill="yellow"
+								class="bi bi-stars"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"
+								/>
+							</svg>
+							<p>0</p>
+						</div>
+					</div>
+				</div>
+				<div class="div2">
+					<div class="card text-center bg-black">
+						<div class="card-header degradezGrisDer divJugador2">
+							<!-- alias2 -->
+						</div>
+						<div
+							class="card-body d-flex flex-column align-items-center"
+						>
+							<img
+								role="button"
+								src="/resources/Images/logoUtec.png"
+								alt="Imagen IA 2"
+								class="imgJug2"
+								data-bs-toggle="modal"
+								data-bs-target="#modalImagen"
+							/>
+							<button
+								type="submit"
+								class="btn btn-outline-light row mt-3"
+								id="btnVotarJug2"
+								hidden
+								disabled
+							>
+								Determinar ganador
+							</button>
+							<button
+								type="submit"
+								class="btn btn-outline-light row mt-3"
+								id="btnVotarPublicoJug2"
+								hidden
+								disabled
+							>
+								Votar
+							</button>
+						</div>
+						<div
+							class="card-footer text-body-secondary degradezGrisDer d-inline-grid"
+							id="votosJug2"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="30"
+								height="30"
+								fill="yellow"
+								class="bi bi-stars"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"
+								/>
+							</svg>
+							<p>0</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="div3 divPostFinalizacion" hidden>
+				<div class="d-flex justify-content-center divGanador">
+                    <p>El ganador es:&nbsp;</p>
+                </div>
+				<button
+					type="submit"
+					class="btn btn-outline-light mt-4"
+					id="btnVolverAJugar"
+				>
+					¡Volver a jugar!
+				</button>
+			</div>
+		</main>
+		<footer class="border-top align-content-center"></footer>
+		<!-- Modal -->
+		<div
+			class="modal fade"
+			id="modalImagen"
+			tabindex="-1"
+			aria-labelledby="exampleModalLabel"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1
+							class="modal-title fs-5"
+							id="exampleModalLabel"
+						></h1>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
+					</div>
+					<div class="modal-body">
+						<img
+							src=""
+							alt="Imagen en modal"
+							id="modal_image"
+							class="w-100 h-auto"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="/resources/js/vistas/votacion.js"></script>
+	</body>
 </html>
