@@ -7,10 +7,6 @@
 	}
 }
 
-main {
-    height: 90svh !important;
-}
-
 #info {
 	display: flex;
 	justify-content: center;

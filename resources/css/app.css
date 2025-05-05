@@ -34,7 +34,7 @@ main {
 
 @media (max-width: 767px) {
     main {
-        height: auto !important;
+        height: 90svh !important;
     }
     #timer {
         font-size: 10svw !important;

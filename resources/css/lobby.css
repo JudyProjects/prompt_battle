@@ -11,6 +11,10 @@ main {
     body {
         height: auto !important;
     }
+
+    main {
+        height: auto !important;
+    }
 }
 
 ul {
