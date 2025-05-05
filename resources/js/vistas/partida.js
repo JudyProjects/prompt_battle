@@ -120,14 +120,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 			},
 		});
 		const responseData = await response.json();
-		/* if (!response.ok) {
-            const title = document.createElement("h1");
-            title.textContent = "Ha surgido un problema con la partida.";
+		if (!response.ok) {
+			const title = document.createElement("h1");
+			title.textContent = "Ha surgido un problema con la partida.";
 			divError.append(title);
 			divError.removeAttribute("hidden");
 			divInfo.setAttribute("hidden", "true");
-		} else */ 
-        if (responseData) {
+		} else if (responseData) {
 			//Cargar temporizador
 			iniciarTemporizador(responseData.tiempo);
 			//Cargar tematica
@@ -136,7 +135,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 			//Cargar cant imagenes a generar
 			cantImagenes = responseData.cantImagenes;
 			divInfo.setAttribute("hidden", "true");
-            divError.setAttribute("hidden", "true");
+			divError.setAttribute("hidden", "true");
+			main.classList.add("d-flex");
 			main.removeAttribute("hidden");
 		}
 	} catch (error) {
@@ -156,6 +156,7 @@ textArea.addEventListener("keydown", function (evt) {
 	if (evt.key == "Enter") {
 		if (textArea.value.trim().length > 0) {
 			btnGenerar.click();
+			evt.preventDefault();
 		}
 	}
 });
