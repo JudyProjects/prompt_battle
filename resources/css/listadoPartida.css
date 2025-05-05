@@ -12,6 +12,10 @@
         min-height: 55vh;
         max-height: 60vh;
     }
+
+    main {
+        height: 90svh !important;
+    }
 }
 
 #btnVolverAJugar{

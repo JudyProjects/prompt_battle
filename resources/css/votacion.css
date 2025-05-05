@@ -1,90 +1,117 @@
 .parent {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  justify-items: center;
-  align-items: center;
-  position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	row-gap: 50px;
+	column-gap: 200px;
+	position: relative;
+    margin-top: 75px;
 }
 
 .div1 {
-  grid-area: 1 / 1 / 6 / 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
-
-  img {
-    width: 200px;
-    height: 200px;
-  }
-  .card-footer p {
-    font-size: xx-large;
-  }
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 35%;
+	img {
+		width: 200px;
+		height: 200px;
+	}
+	.card-footer p {
+		font-size: xx-large;
+	}
 }
 .div2 {
-  grid-area: 1 / 2 / 6 / 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 35%;
 
-  img {
-    width: 200px;
-    height: 200px;
-  }
-  .card-footer p {
-    font-size: xx-large;
-  }
+	img {
+		width: 200px;
+		height: 200px;
+	}
+	.card-footer p {
+		font-size: xx-large;
+	}
 }
 .div3 {
-  grid-area: 6 / 1 / 7 / 3;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	margin: 50px 0;
 }
 
 .degradezGrisIzq {
-  background: rgb(84, 83, 83);
-  background: linear-gradient(
-    -230deg,
-    rgba(84, 83, 83, 1) 0%,
-    rgba(64, 60, 60, 1) 88%,
-    rgba(149, 149, 149, 1) 100%
-  );
+	background: rgb(84, 83, 83);
+	background: linear-gradient(
+		-230deg,
+		rgba(84, 83, 83, 1) 0%,
+		rgba(64, 60, 60, 1) 88%,
+		rgba(149, 149, 149, 1) 100%
+	);
 }
 
 .degradezGrisDer {
-  background: rgb(84, 83, 83);
-  background: linear-gradient(
-    230deg,
-    rgba(84, 83, 83, 1) 0%,
-    rgba(64, 60, 60, 1) 88%,
-    rgba(149, 149, 149, 1) 100%
-  );
+	background: rgb(84, 83, 83);
+	background: linear-gradient(
+		230deg,
+		rgba(84, 83, 83, 1) 0%,
+		rgba(64, 60, 60, 1) 88%,
+		rgba(149, 149, 149, 1) 100%
+	);
+}
+
+.divGanador > p {
+	font-size: 1.2vw;
+	& ~ p {
+		font-weight: bold;
+	}
+}
+
+.card-header {
+	color: white;
 }
 
 .btnLobby {
-  position: absolute;
-  left: 5%;
-  top: 5%;
-  z-index: 10;
+	position: absolute;
+	left: 5%;
+	top: 5%;
+	z-index: 10;
 }
 
 .btnPartidas {
-  position: absolute;
-  left: 5%;
-  top: 10%;
-  z-index: 10;
+	position: absolute;
+	left: 5%;
+	top: 10%;
+	z-index: 10;
 }
 
-#timer{
-  position: absolute;
+#timer {
+	position: absolute;
+	top: 50px;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .ganador {
-  border: 5px solid rgba(245, 178, 34, 0.826);
-  border-radius: 5px;
+	border: 5px solid rgba(245, 178, 34, 0.826);
+	border-radius: 5px;
+}
+
+@media (max-width: 991px) {
+	.div1,
+	.div2 {
+		width: 80% !important;
+	}
+
+	.divGanador > p {
+		font-size: 6vw;
+	}
+
+	main {
+		height: 90svh !important;
+        overflow-y: auto;
+	}
 }

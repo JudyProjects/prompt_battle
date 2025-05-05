@@ -31,15 +31,21 @@ main {
 	font-style: normal;
     height: 88vh;
 }
+
 @media (max-width: 767px) {
     main {
         height: auto !important;
     }
-}
+    #timer {
+        font-size: 10svw !important;
+    }
+}   
 
 #timer {
 	color: green !important;
 	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-size: 3vw;
+    font-weight: 300;
 }
 
 button,

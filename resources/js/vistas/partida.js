@@ -5,7 +5,8 @@ const btnGenerar = document.getElementById("btnGenerar");
 const btnResultado = document.getElementById("btnResultado");
 const divImagenes = document.getElementById("divImagenesGeneradas");
 const btnVolver = document.getElementById("btnVolver");
-const tematicaElegida = document.getElementById("tematicaElegida");
+const tematicaElegidaPC = document.getElementById("tematicaElegidaPC");
+const tematicaElegidaMOBILE = document.getElementById("tematicaElegidaMOBILE");
 const textArea = document.querySelector("textarea");
 const id = window.location.pathname.split("/")[3];
 const divInfo = document.getElementById("info");
@@ -130,7 +131,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 			//Cargar temporizador
 			iniciarTemporizador(responseData.tiempo);
 			//Cargar tematica
-			tematicaElegida.textContent = responseData.tematica;
+			tematicaElegidaPC.textContent = responseData.tematica;
+			tematicaElegidaMOBILE.textContent = responseData.tematica;
 			//Cargar cant imagenes a generar
 			cantImagenes = responseData.cantImagenes;
 			divInfo.setAttribute("hidden", "true");

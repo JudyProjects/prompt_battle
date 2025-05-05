@@ -32,7 +32,8 @@ footer {
 
 @media (max-width: 1023px) {
   footer {
-    height: fit-content;
+    height: 10svh;
+    position: static;
   }
 
   .mobile-footer {
